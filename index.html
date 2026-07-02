@@ -698,7 +698,17 @@
                 <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
                 Risk Analiz Raporu
             </h2>
-            <div class="result-container">
+            
+            <!-- Age Warning Display (hidden by default) -->
+            <div id="ageWarningContainer" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 350px; text-align: center; gap: 1rem; padding: 1rem;">
+                <svg style="width: 4rem; height: 4rem; color: var(--risk-grey);" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <h3 id="ageWarningTitle" style="color: var(--primary); font-weight: 600; font-size: 1.15rem;">Analiz Yapılamaz</h3>
+                <p id="ageWarningText" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; max-width: 280px;">Model bu yaş grubunda eğitilmedi. Analiz yalnızca 18-85 yaş aralığındaki yetişkin hastalar için geçerlidir.</p>
+            </div>
+
+            <div class="result-container" id="normalResultContainer">
                 <!-- Circular Gauge -->
                 <div class="gauge-wrapper">
                     <svg class="gauge-svg" viewBox="0 0 200 200">
@@ -880,7 +890,9 @@
                 exclusionItem10: "3 aydan uzun süre sistemik glukokortikoid (steroid) kullanımı",
                 exclusionItem11: "Son 3 ay içinde tek seferde en az 80.000 IU veya üzeri tek doz D vitamini almış olmak (yüksek doz yükleme tedavisi)",
                 exclusionItem12: "Herhangi bir veri özniteliğinde eksik kayıt bulunması (imputasyon yapılmamıştır)",
-                disclaimer: "<strong>Tıbbi Uyarı:</strong> Bu araç, Çanakkale bölgesinde D vitamini yetersizliğini öngörmek üzere hekimler için geliştirilmiş bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorları doğrudan tıbbi bir tanı veya tedavi reçetesi teşkil etmez. Tanı ve tedavi süreçlerinde hekimin klinik kanaati ve serum ölçüm değerleri esastır."
+                disclaimer: "<strong>Tıbbi Uyarı:</strong> Bu araç, Çanakkale bölgesinde D vitamini yetersizliğini öngörmek üzere hekimler için geliştirilmiş bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorları doğrudan tıbbi bir tanı veya tedavi reçetesi teşkil etmez. Tanı ve tedavi süreçlerinde hekimin klinik kanaati ve serum ölçüm değerleri esastır.",
+                ageWarningTitle: "Uyuşmayan Popülasyon",
+                ageWarningText: "Model bu yaş grubunda eğitilmedi. Analiz yalnızca 18-85 yaş aralığındaki yetişkin hastalar için geçerlidir."
             },
             en: {
                 title: "Vitamin D Deficiency Risk Calculator <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
@@ -935,7 +947,9 @@
                 exclusionItem10: "Systemic glucocorticoid (steroid) use for more than 3 months",
                 exclusionItem11: "Single dose intake of at least 80,000 IU of vitamin D within the previous three months (high-dose loading therapy)",
                 exclusionItem12: "Presence of missing records in any data attribute (no imputation was performed)",
-                disclaimer: "<strong>Medical Disclaimer:</strong> This tool is a clinical decision support system developed for physicians to predict vitamin D insufficiency in the Çanakkale region. Calculated risk scores do not constitute direct medical diagnosis or treatment prescription. The physician's clinical judgment and serum measurement values are primary in diagnostic and therapeutic processes."
+                disclaimer: "<strong>Medical Disclaimer:</strong> This tool is a clinical decision support system developed for physicians to predict vitamin D insufficiency in the Çanakkale region. Calculated risk scores do not constitute direct medical diagnosis or treatment prescription. The physician's clinical judgment and serum measurement values are primary in diagnostic and therapeutic processes.",
+                ageWarningTitle: "Incompatible Population",
+                ageWarningText: "The model was not trained in this age group. Analysis is only valid for adult patients between 18 and 85 years of age."
             }
         };
 
@@ -1147,6 +1161,10 @@
             
             document.getElementById('disclaimerText').innerHTML = t.disclaimer;
             
+            // Age warning text updates
+            document.getElementById('ageWarningTitle').innerText = t.ageWarningTitle;
+            document.getElementById('ageWarningText').innerText = t.ageWarningText;
+            
             // Recalculate to update the dynamic texts in target language
             calculateRisk();
         }
@@ -1177,14 +1195,24 @@
         // Calculate and update risk
         function calculateRisk() {
             // Get values
-            const age = parseFloat(document.getElementById('age').value) || 0;
+            const age = parseFloat(document.getElementById('age').value);
             const gender = parseFloat(document.getElementById('gender').value);
             const height = parseFloat(document.getElementById('height').value) || 0;
             const weight = parseFloat(document.getElementById('weight').value) || 0;
             const dateStr = document.getElementById('date').value;
             const supplement = parseFloat(document.getElementById('supplement').value);
 
-            if (!age || !height || !weight || !dateStr) return;
+            if (isNaN(age) || !height || !weight || !dateStr) return;
+
+            // Check age range limits (18 - 85 years inclusive)
+            if (age < 18 || age > 85) {
+                document.getElementById('normalResultContainer').style.display = 'none';
+                document.getElementById('ageWarningContainer').style.display = 'flex';
+                return;
+            } else {
+                document.getElementById('normalResultContainer').style.display = 'flex';
+                document.getElementById('ageWarningContainer').style.display = 'none';
+            }
 
             // Calculate BMI
             const bmi = weight / ((height / 100) * (height / 100));
