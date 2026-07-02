@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D Vitamini EksikliÄŸi Risk HesaplayÄ±cÄ± (25(OH)D &lt; 20 ng/mL)</title>
+    <title>D Vitamini Eksikliği Risk Hesaplayıcı (25(OH)D &lt; 20 ng/mL)</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -590,12 +590,12 @@
             <svg class="icon" style="color: var(--primary); width: 2.5rem; height: 2.5rem; flex-shrink: 0;" viewBox="0 0 24 24">
                 <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75zM6.16 5.1a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06L6.16 6.16a.75.75 0 0 1 0-1.06zm11.68 0a.75.75 0 0 1 0 1.06l-1.59 1.59a.75.75 0 1 1-1.06-1.06l1.59-1.59a.75.75 0 0 1 1.06 0zM3 12a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12zm15 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5h-2.25A.75.75 0 0 1 18 12zM7.75 16.25a.75.75 0 0 1 0 1.06l-1.59 1.59a.75.75 0 1 1-1.06-1.06l1.59-1.59a.75.75 0 0 1 1.06 0zm9.56 0a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06l-1.59-1.59a.75.75 0 0 1 0-1.06zM12 18.75a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75zM12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/>
             </svg>
-            <h1 id="headerTitle" style="margin: 0; line-height: 1.2;">D Vitamini EksikliÄŸi Risk HesaplayÄ±cÄ± <span style="font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;">(25(OH)D &lt; 20 ng/mL)</span></h1>
+            <h1 id="headerTitle" style="margin: 0; line-height: 1.2;">D Vitamini Eksikliği Risk Hesaplayıcı <span style="font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;">(25(OH)D &lt; 20 ng/mL)</span></h1>
         </div>
         
         <!-- Subtitle and Dropdown aligned next to each other -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
-            <p id="headerSubtitle" style="margin: 0;">Lojistik Regresyon Ä°statistiksel Modeline DayalÄ± Klinik Karar Destek Sistemi</p>
+            <p id="headerSubtitle" style="margin: 0;">Lojistik Regresyon İstatistiksel Modeline Dayalı Klinik Karar Destek Sistemi</p>
             
             <div class="lang-dropdown">
                 <button class="lang-dropbtn" onclick="toggleLangDropdown(event)">
@@ -613,7 +613,7 @@
                             <circle cx="13.2" cy="10" r="4" fill="#e30a17"/>
                             <polygon points="17.2,10 19,10.6 17.5,11.7 18.1,13.5 16.6,12.4 15.1,13.5 15.7,11.7 14.2,10.6 16,10.6 16.6,8.8" fill="#fff" transform="rotate(-18, 16.6, 10.7)"/>
                         </svg>
-                        <span>TÃ¼rkÃ§e</span>
+                        <span>Türkçe</span>
                     </a>
                     <a href="javascript:void(0)" onclick="setLanguage('en')">
                         <svg viewBox="0 0 60 30" style="width: 1.25rem; height: 0.85rem; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
@@ -641,7 +641,7 @@
                 <div class="form-grid">
                     <!-- Age -->
                     <div class="form-group">
-                        <label for="age" id="ageLabel">YaÅŸ</label>
+                        <label for="age" id="ageLabel">Yaş</label>
                         <input type="number" id="age" min="1" max="120" value="45" required>
                     </div>
 
@@ -649,7 +649,7 @@
                     <div class="form-group">
                         <label for="gender" id="genderLabel">Cinsiyet</label>
                         <select id="gender" required>
-                            <option value="1">KadÄ±n</option>
+                            <option value="1">Kadın</option>
                             <option value="0">Erkek</option>
                         </select>
                     </div>
@@ -668,16 +668,16 @@
 
                     <!-- Date -->
                     <div class="form-group full-width">
-                        <label for="date" id="dateLabel">Kan Ã–rneÄŸi / BaÅŸvuru Tarihi</label>
+                        <label for="date" id="dateLabel">Kan Örneği / Başvuru Tarihi</label>
                         <input type="date" id="date" required>
-                        <div class="input-helper" id="dateHelper">Mevsimsel gÃ¼neÅŸ dÃ¶ngÃ¼sÃ¼nÃ¼ (sin/cos gÃ¼n deÄŸerlerini) hesaplamak iÃ§in kullanÄ±lÄ±r.</div>
+                        <div class="input-helper" id="dateHelper">Mevsimsel güneş döngüsünü (sin/cos gün değerlerini) hesaplamak için kullanılır.</div>
                     </div>
 
                     <!-- Supplementation -->
                     <div class="form-group full-width">
                         <label for="supplement" style="display: flex; align-items: center; gap: 0.35rem;">
-                            <span id="suppLabelText">Son ÃœÃ§ Ay Ä°Ã§erisinde D Vitamini Takviyesi KullanÄ±mÄ±</span>
-                            <span class="tooltip" id="suppTooltip" data-tooltip="Ã‡alÄ±ÅŸma tanÄ±mÄ±na gÃ¶re: Son 3 ay iÃ§inde reÃ§ete kayÄ±tlarÄ±na gÃ¶re gÃ¼nlÃ¼k en az 1000 IU (1000 IU/gÃ¼n) D vitamini kullanmÄ±ÅŸ olmak (yÃ¼kleme veya idame tedavisi ayrÄ±mÄ± yapÄ±lmaksÄ±zÄ±n).">
+                            <span id="suppLabelText">Son Üç Ay İçerisinde D Vitamini Takviyesi Kullanımı</span>
+                            <span class="tooltip" id="suppTooltip" data-tooltip="Çalışma tanımına göre: Son 3 ay içinde reçete kayıtlarına göre günlük en az 1000 IU (1000 IU/gün) D vitamini kullanmış olmak (yükleme veya idame tedavisi ayrımı yapılmaksızın).">
                                 <svg style="width: 1.05rem; height: 1.05rem; color: var(--text-muted); cursor: pointer; vertical-align: middle;" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
                                 </svg>
@@ -707,21 +707,21 @@
                     </svg>
                     <div class="gauge-text">
                         <div id="gaugeValue" class="gauge-value">0.0%</div>
-                        <div class="gauge-label">Eksiklik OlasÄ±lÄ±ÄŸÄ±</div>
+                        <div class="gauge-label">Eksiklik Olasılığı</div>
                     </div>
                 </div>
 
                 <!-- Risk Status Badge -->
                 <div>
                     <label style="text-align: center; display: block; font-weight: 600;">Eksiklik Risk Seviyesi</label>
-                    <div id="riskBadge" class="risk-badge">HesaplanÄ±yor...</div>
+                    <div id="riskBadge" class="risk-badge">Hesaplanıyor...</div>
                 </div>
 
                 <!-- Recommendations (Clinical Status Wording) -->
                 <div id="recBox" class="rec-box">
                     <h4 id="recHeader">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                        <span id="recTitle">Klinik Durum AÃ§Ä±klamasÄ±</span>
+                        <span id="recTitle">Klinik Durum Açıklaması</span>
                     </h4>
                     <p id="recText"></p>
                 </div>
@@ -729,32 +729,32 @@
                 <!-- Dynamic diagnostic values -->
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <span class="stat-label" id="sensLabelText">Sensitivite (DuyarlÄ±lÄ±k)</span>
+                        <span class="stat-label" id="sensLabelText">Sensitivite (Duyarlılık)</span>
                         <span id="sensValue" class="stat-value">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label" id="specLabelText">Spesifite (Ã–zgÃ¼nlÃ¼k)</span>
+                        <span class="stat-label" id="specLabelText">Spesifite (Özgünlük)</span>
                         <span id="specValue" class="stat-value">-</span>
                     </div>
                     <div class="stat-item" style="grid-column: span 2; border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.25rem;">
-                        <span class="stat-label" id="bmiLabelText">Hesaplanan BMI (VKÄ°)</span>
+                        <span class="stat-label" id="bmiLabelText">Hesaplanan BMI (VKİ)</span>
                         <span id="bmiValue" class="stat-value">-</span>
                     </div>
                 </div>
 
                 <!-- Graphical Threshold Bar -->
                 <div class="threshold-bar-container">
-                    <span class="threshold-bar-title">Risk EÅŸikleri ve Hasta Konumu</span>
+                    <span class="threshold-bar-title">Risk Eşikleri ve Hasta Konumu</span>
                     <div class="threshold-bar">
                         <div id="riskMarker" class="threshold-marker">
                             <div id="markerVal" class="threshold-marker-value">0%</div>
                         </div>
                     </div>
                     <div class="threshold-labels">
-                        <span style="color: #10b981;" id="threshLabel1">DÃ¼ÅŸÃ¼k Risk (0-%20)</span>
+                        <span style="color: #10b981;" id="threshLabel1">Düşük Risk (0-%20)</span>
                         <span style="color: #d97706;" id="threshLabel2">Gri Zon (%20-%51.8)</span>
-                        <span style="color: #ef4444;" id="threshLabel3">YÃ¼ksek Risk (%51.8-%80)</span>
-                        <span style="color: #7f1d1d;" id="threshLabel4">Ã‡ok YÃ¼ksek (%80-%100)</span>
+                        <span style="color: #ef4444;" id="threshLabel3">Yüksek Risk (%51.8-%80)</span>
+                        <span style="color: #7f1d1d;" id="threshLabel4">Çok Yüksek (%80-%100)</span>
                     </div>
                 </div>
             </div>
@@ -764,9 +764,9 @@
         <div class="metrics-card" id="metricsCard" style="margin-top: 1.5rem;">
             <h2 class="card-title" id="metricsCardTitle" style="margin-bottom: 0.75rem;">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 7h-4v3h4v2h-4v3h-2v-3H7v-2h4v-3H7V8h4V5h2v3h4v2z"/></svg>
-                GeliÅŸtirilen Model Ä°statistiksel Metrikleri (Test Seti Ãœzerinde)
+                Geliştirilen Model İstatistiksel Metrikleri (Test Seti Üzerinde)
             </h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted);" id="metricsCardSub">Bu hesaplayÄ±cÄ±, Ã‡anakkale enlemindeki (40.15Â° N) gÃ¼neÅŸ aÃ§Ä±sÄ± verileri ve 1768 hastanÄ±n D vitamini dÃ¼zeyleri ile eÄŸitilen Lojistik Regresyon modelinin formÃ¼lÃ¼nÃ¼ kullanmaktadÄ±r.</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);" id="metricsCardSub">Bu hesaplayıcı, Çanakkale enlemindeki (40.15° N) güneş açısı verileri ve 1768 hastanın D vitamini düzeyleri ile eğitilen Lojistik Regresyon modelinin formülünü kullanmaktadır.</p>
             <div class="metrics-grid">
                 <div class="metric-box">
                     <div class="metric-title" id="mTitle1">Test Seti AUC</div>
@@ -776,20 +776,20 @@
                 <div class="metric-box">
                     <div class="metric-title" id="mTitle2">Brier Skoru</div>
                     <div class="metric-val">0.184</div>
-                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp2">DÃ¼ÅŸÃ¼k Hata OranÄ±</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp2">Düşük Hata Oranı</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-title" id="mTitle3">Youden EÅŸik DeÄŸeri</div>
+                    <div class="metric-title" id="mTitle3">Youden Eşik Değeri</div>
                     <div class="metric-val">0.518</div>
-                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp3">Matematiksel EÅŸik</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp3">Matematiksel Eşik</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-title" id="mTitle4">Model EÄŸimi (Slope)</div>
+                    <div class="metric-title" id="mTitle4">Model Eğimi (Slope)</div>
                     <div class="metric-val">0.788</div>
-                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp4">Kalibrasyon EÄŸrisi</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp4">Kalibrasyon Eğrisi</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-title" id="mTitle5">Model KesiÅŸimi</div>
+                    <div class="metric-title" id="mTitle5">Model Kesişimi</div>
                     <div class="metric-val">0.129</div>
                     <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp5">Calibration-in-the-large</div>
                 </div>
@@ -800,27 +800,27 @@
         <div class="metrics-card" style="margin-top: 1.5rem;">
             <h2 class="card-title" id="exclusionCardTitle" style="margin-bottom: 0.75rem;">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
-                Ã‡alÄ±ÅŸma PopÃ¼lasyonu DÄ±ÅŸlama Kriterleri
+                Çalışma Popülasyonu Dışlama Kriterleri
             </h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;" id="exclusionCardSub">Modelin doÄŸruluÄŸu ve gÃ¼venilirliÄŸi aÃ§Ä±sÄ±ndan, aÅŸaÄŸÄ±daki kriterlerden herhangi birine sahip olan hastalar Ã§alÄ±ÅŸma veri setine dahil edilmemiÅŸtir:</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;" id="exclusionCardSub">Modelin doğruluğu ve güvenilirliği açısından, aşağıdaki kriterlerden herhangi birine sahip olan hastalar çalışma veri setine dahil edilmemiştir:</p>
             <ul style="font-size: 0.82rem; color: var(--text-dark); padding-left: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1.5rem; line-height: 1.4;">
-                <li id="exItem1">Gebelik veya laktasyon (emzirme) dÃ¶nemi</li>
-                <li id="exItem2">GFR &lt; 30 mL/dk/1.73 mÂ² (Evre 4-5 bÃ¶brek yetmezliÄŸi)</li>
-                <li id="exItem3">Diyaliz veya renal transplantasyon (bÃ¶brek nakli) Ã¶ykÃ¼sÃ¼</li>
-                <li id="exItem4">Belirgin karaciÄŸer yetmezliÄŸi</li>
-                <li id="exItem5">Ã‡Ã¶lyak hastalÄ±ÄŸÄ± veya inflamatuvar baÄŸÄ±rsak hastalÄ±ÄŸÄ± (Ä°BH)</li>
-                <li id="exItem6">Bariatrik (tÃ¼p mide/bypass) veya gastrointestinal cerrahi Ã¶ykÃ¼sÃ¼</li>
+                <li id="exItem1">Gebelik veya laktasyon (emzirme) dönemi</li>
+                <li id="exItem2">GFR &lt; 30 mL/dk/1.73 m² (Evre 4-5 böbrek yetmezliği)</li>
+                <li id="exItem3">Diyaliz veya renal transplantasyon (böbrek nakli) öyküsü</li>
+                <li id="exItem4">Belirgin karaciğer yetmezliği</li>
+                <li id="exItem5">Çölyak hastalığı veya inflamatuvar bağırsak hastalığı (İBH)</li>
+                <li id="exItem6">Bariatrik (tüp mide/bypass) veya gastrointestinal cerrahi öyküsü</li>
                 <li id="exItem7">Primer hipoparatiroidi veya hiperparatiroidi</li>
-                <li id="exItem8">Aktif malignite (kanser) veya kemik metastazÄ±</li>
-                <li id="exItem9">Antiepileptik veya antiretroviral ilaÃ§ kullanÄ±mÄ±</li>
-                <li id="exItem10">3 aydan uzun sÃ¼re sistemik glukokortikoid (steroid) kullanÄ±mÄ±</li>
-                <li id="exItem11">Son 3 ay iÃ§inde tek seferde en az 80.000 IU veya Ã¼zeri tek doz D vitamini almÄ±ÅŸ olmak (yÃ¼ksek doz yÃ¼kleme tedavisi)</li>
-                <li id="exItem12">Herhangi bir veri Ã¶zniteliÄŸinde eksik kayÄ±t bulunmasÄ± (imputasyon yapÄ±lmamÄ±ÅŸtÄ±r)</li>
+                <li id="exItem8">Aktif malignite (kanser) veya kemik metastazı</li>
+                <li id="exItem9">Antiepileptik veya antiretroviral ilaç kullanımı</li>
+                <li id="exItem10">3 aydan uzun süre sistemik glukokortikoid (steroid) kullanımı</li>
+                <li id="exItem11">Son 3 ay içinde tek seferde en az 80.000 IU veya üzeri tek doz D vitamini almış olmak (yüksek doz yükleme tedavisi)</li>
+                <li id="exItem12">Herhangi bir veri özniteliğinde eksik kayıt bulunması (imputasyon yapılmamıştır)</li>
             </ul>
         </div>
 
         <div class="disclaimer" id="disclaimerText">
-            <strong>TÄ±bbi UyarÄ±:</strong> Bu araÃ§, Ã‡anakkale bÃ¶lgesinde D vitamini yetersizliÄŸini Ã¶ngÃ¶rmek Ã¼zere hekimler iÃ§in geliÅŸtirilmiÅŸ bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorlarÄ± doÄŸrudan tÄ±bbi bir tanÄ± veya tedavi reÃ§etesi teÅŸkil etmez. TanÄ± ve tedavi sÃ¼reÃ§lerinde hekimin klinik kanaati ve serum Ã¶lÃ§Ã¼m deÄŸerleri esastÄ±r.
+            <strong>Tıbbi Uyarı:</strong> Bu araç, Çanakkale bölgesinde D vitamini yetersizliğini öngörmek üzere hekimler için geliştirilmiş bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorları doğrudan tıbbi bir tanı veya tedavi reçetesi teşkil etmez. Tanı ve tedavi süreçlerinde hekimin klinik kanaati ve serum ölçüm değerleri esastır.
         </div>
     </div>
 
@@ -828,59 +828,59 @@
         // Language Translations
         const translations = {
             tr: {
-                title: "D Vitamini EksikliÄŸi Risk HesaplayÄ±cÄ± <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
-                subtitle: "Lojistik Regresyon Ä°statistiksel Modeline DayalÄ± Klinik Karar Destek Sistemi",
+                title: "D Vitamini Eksikliği Risk Hesaplayıcı <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
+                subtitle: "Lojistik Regresyon İstatistiksel Modeline Dayalı Klinik Karar Destek Sistemi",
                 patientParams: "Hasta Parametreleri",
-                age: "YaÅŸ",
+                age: "Yaş",
                 gender: "Cinsiyet",
-                genderFemale: "KadÄ±n",
+                genderFemale: "Kadın",
                 genderMale: "Erkek",
                 height: "Boy (cm)",
                 weight: "Kilo (kg)",
-                dateLabel: "Kan Ã–rneÄŸi / BaÅŸvuru Tarihi",
-                dateHelper: "Mevsimsel gÃ¼neÅŸ dÃ¶ngÃ¼sÃ¼nÃ¼ (sin/cos gÃ¼n deÄŸerlerini) hesaplamak iÃ§in kullanÄ±lÄ±r.",
-                suppLabel: "Son ÃœÃ§ Ay Ä°Ã§erisinde D Vitamini Takviyesi KullanÄ±mÄ±",
-                suppTooltip: "Ã‡alÄ±ÅŸma tanÄ±mÄ±na gÃ¶re: Son 3 ay iÃ§inde reÃ§ete kayÄ±tlarÄ±na gÃ¶re gÃ¼nlÃ¼k en az 1000 IU (1000 IU/gÃ¼n) D vitamini kullanmÄ±ÅŸ olmak (yÃ¼kleme veya idame tedavisi ayrÄ±mÄ± yapÄ±lmaksÄ±zÄ±n).",
+                dateLabel: "Kan Örneği / Başvuru Tarihi",
+                dateHelper: "Mevsimsel güneş döngüsünü (sin/cos gün değerlerini) hesaplamak için kullanılır.",
+                suppLabel: "Son Üç Ay İçerisinde D Vitamini Takviyesi Kullanımı",
+                suppTooltip: "Çalışma tanımına göre: Son 3 ay içinde reçete kayıtlarına göre günlük en az 1000 IU (1000 IU/gün) D vitamini kullanmış olmak (yükleme veya idame tedavisi ayrımı yapılmaksızın).",
                 suppNo: "YOK",
                 suppYes: "VAR",
                 reportTitle: "Risk Analiz Raporu",
-                probDeficiency: "Eksiklik OlasÄ±lÄ±ÄŸÄ±",
+                probDeficiency: "Eksiklik Olasılığı",
                 riskLevel: "Eksiklik Risk Seviyesi",
-                recHeader: "Klinik Durum AÃ§Ä±klamasÄ±",
-                sensLabel: "Sensitivite (DuyarlÄ±lÄ±k)",
-                specLabel: "Spesifite (Ã–zgÃ¼nlÃ¼k)",
-                calculatedBmi: "Hesaplanan BMI (VKÄ°)",
-                thresholdTitle: "Risk EÅŸikleri ve Hasta Konumu",
-                threshLow: "DÃ¼ÅŸÃ¼k Risk (0-%20)",
+                recHeader: "Klinik Durum Açıklaması",
+                sensLabel: "Sensitivite (Duyarlılık)",
+                specLabel: "Spesifite (Özgünlük)",
+                calculatedBmi: "Hesaplanan BMI (VKİ)",
+                thresholdTitle: "Risk Eşikleri ve Hasta Konumu",
+                threshLow: "Düşük Risk (0-%20)",
                 threshGrey: "Gri Zon (%20-%51.8)",
-                threshHigh: "YÃ¼ksek Risk (%51.8-%80)",
-                threshVeryHigh: "Ã‡ok YÃ¼ksek (%80-%100)",
-                metricsTitle: "GeliÅŸtirilen Model Ä°statistiksel Metrikleri (Test Seti Ãœzerinde)",
-                metricsSub: "Bu hesaplayÄ±cÄ±, Ã‡anakkale enlemindeki (40.15Â° N) gÃ¼neÅŸ aÃ§Ä±sÄ± verileri ve 1768 hastanÄ±n D vitamini dÃ¼zeyleri ile eÄŸitilen Lojistik Regresyon modelinin formÃ¼lÃ¼nÃ¼ kullanmaktadÄ±r.",
+                threshHigh: "Yüksek Risk (%51.8-%80)",
+                threshVeryHigh: "Çok Yüksek (%80-%100)",
+                metricsTitle: "Geliştirilen Model İstatistiksel Metrikleri (Test Seti Üzerinde)",
+                metricsSub: "Bu hesaplayıcı, Çanakkale enlemindeki (40.15° N) güneş açısı verileri ve 1768 hastanın D vitamini düzeyleri ile eğitilen Lojistik Regresyon modelinin formülünü kullanmaktadır.",
                 metricAuc: "Test Seti AUC",
                 metricBrier: "Brier Skoru",
-                metricYouden: "Youden EÅŸik DeÄŸeri",
-                metricSlope: "Model EÄŸimi (Slope)",
-                metricIntercept: "Model KesiÅŸimi",
-                metricBrierHelper: "DÃ¼ÅŸÃ¼k Hata OranÄ±",
-                metricYoudenHelper: "Matematiksel EÅŸik",
-                metricSlopeHelper: "Kalibrasyon EÄŸrisi",
+                metricYouden: "Youden Eşik Değeri",
+                metricSlope: "Model Eğimi (Slope)",
+                metricIntercept: "Model Kesişimi",
+                metricBrierHelper: "Düşük Hata Oranı",
+                metricYoudenHelper: "Matematiksel Eşik",
+                metricSlopeHelper: "Kalibrasyon Eğrisi",
                 metricInterceptHelper: "Calibration-in-the-large",
-                exclusionTitle: "Ã‡alÄ±ÅŸma PopÃ¼lasyonu DÄ±ÅŸlama Kriterleri",
-                exclusionSub: "Modelin doÄŸruluÄŸu ve gÃ¼venilirliÄŸi aÃ§Ä±sÄ±ndan, aÅŸaÄŸÄ±daki kriterlerden herhangi birine sahip olan hastalar Ã§alÄ±ÅŸma veri setine dahil edilmemiÅŸtir:",
-                exclusionItem1: "Gebelik veya laktasyon (emzirme) dÃ¶nemi",
-                exclusionItem2: "GFR &lt; 30 mL/dk/1.73 mÂ² (Evre 4-5 bÃ¶brek yetmezliÄŸi)",
-                exclusionItem3: "Diyaliz veya renal transplantasyon (bÃ¶brek nakli) Ã¶ykÃ¼sÃ¼",
-                exclusionItem4: "Belirgin karaciÄŸer yetmezliÄŸi",
-                exclusionItem5: "Ã‡Ã¶lyak hastalÄ±ÄŸÄ± veya inflamatuvar baÄŸÄ±rsak hastalÄ±ÄŸÄ± (Ä°BH)",
-                exclusionItem6: "Bariatrik (tÃ¼p mide/bypass) veya gastrointestinal cerrahi Ã¶ykÃ¼sÃ¼",
+                exclusionTitle: "Çalışma Popülasyonu Dışlama Kriterleri",
+                exclusionSub: "Modelin doğruluğu ve güvenilirliği açısından, aşağıdaki kriterlerden herhangi birine sahip olan hastalar çalışma veri setine dahil edilmemiştir:",
+                exclusionItem1: "Gebelik veya laktasyon (emzirme) dönemi",
+                exclusionItem2: "GFR &lt; 30 mL/dk/1.73 m² (Evre 4-5 böbrek yetmezliği)",
+                exclusionItem3: "Diyaliz veya renal transplantasyon (böbrek nakli) öyküsü",
+                exclusionItem4: "Belirgin karaciğer yetmezliği",
+                exclusionItem5: "Çölyak hastalığı veya inflamatuvar bağırsak hastalığı (İBH)",
+                exclusionItem6: "Bariatrik (tüp mide/bypass) veya gastrointestinal cerrahi öyküsü",
                 exclusionItem7: "Primer hipoparatiroidi veya hiperparatiroidi",
-                exclusionItem8: "Aktif malignite (kanser) veya kemik metastazÄ±",
-                exclusionItem9: "Antiepileptik veya antiretroviral ilaÃ§ kullanÄ±mÄ±",
-                exclusionItem10: "3 aydan uzun sÃ¼re sistemik glukokortikoid (steroid) kullanÄ±mÄ±",
-                exclusionItem11: "Son 3 ay iÃ§inde tek seferde en az 80.000 IU veya Ã¼zeri tek doz D vitamini almÄ±ÅŸ olmak (yÃ¼ksek doz yÃ¼kleme tedavisi)",
-                exclusionItem12: "Herhangi bir veri Ã¶zniteliÄŸinde eksik kayÄ±t bulunmasÄ± (imputasyon yapÄ±lmamÄ±ÅŸtÄ±r)",
-                disclaimer: "<strong>TÄ±bbi UyarÄ±:</strong> Bu araÃ§, Ã‡anakkale bÃ¶lgesinde D vitamini yetersizliÄŸini Ã¶ngÃ¶rmek Ã¼zere hekimler iÃ§in geliÅŸtirilmiÅŸ bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorlarÄ± doÄŸrudan tÄ±bbi bir tanÄ± veya tedavi reÃ§etesi teÅŸkil etmez. TanÄ± ve tedavi sÃ¼reÃ§lerinde hekimin klinik kanaati ve serum Ã¶lÃ§Ã¼m deÄŸerleri esastÄ±r."
+                exclusionItem8: "Aktif malignite (kanser) veya kemik metastazı",
+                exclusionItem9: "Antiepileptik veya antiretroviral ilaç kullanımı",
+                exclusionItem10: "3 aydan uzun süre sistemik glukokortikoid (steroid) kullanımı",
+                exclusionItem11: "Son 3 ay içinde tek seferde en az 80.000 IU veya üzeri tek doz D vitamini almış olmak (yüksek doz yükleme tedavisi)",
+                exclusionItem12: "Herhangi bir veri özniteliğinde eksik kayıt bulunması (imputasyon yapılmamıştır)",
+                disclaimer: "<strong>Tıbbi Uyarı:</strong> Bu araç, Çanakkale bölgesinde D vitamini yetersizliğini öngörmek üzere hekimler için geliştirilmiş bir <strong>klinik karar destek sistemidir</strong>. Hesaplanan risk skorları doğrudan tıbbi bir tanı veya tedavi reçetesi teşkil etmez. Tanı ve tedavi süreçlerinde hekimin klinik kanaati ve serum ölçüm değerleri esastır."
             },
             en: {
                 title: "Vitamin D Deficiency Risk Calculator <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
@@ -911,7 +911,7 @@
                 threshHigh: "High Risk (51.8-80%)",
                 threshVeryHigh: "Very High (80-100%)",
                 metricsTitle: "Statistical Metrics of the Developed Model (On Test Set)",
-                metricsSub: "This calculator utilizes the formula of the Logistic Regression model trained with 1768 patients' vitamin D levels and seasonal solar angle data in the latitude of Ã‡anakkale (40.15Â° N).",
+                metricsSub: "This calculator utilizes the formula of the Logistic Regression model trained with 1768 patients' vitamin D levels and seasonal solar angle data in the latitude of Çanakkale (40.15° N).",
                 metricAuc: "Test Set AUC",
                 metricBrier: "Brier Score",
                 metricYouden: "Youden Cut-off Value",
@@ -924,7 +924,7 @@
                 exclusionTitle: "Study Population Exclusion Criteria",
                 exclusionSub: "For the accuracy and generalizability of the model, patients with any of the following criteria were excluded from the study dataset:",
                 exclusionItem1: "Pregnancy or lactation period",
-                exclusionItem2: "GFR &lt; 30 mL/min/1.73 mÂ² (Stage 4-5 renal failure)",
+                exclusionItem2: "GFR &lt; 30 mL/min/1.73 m² (Stage 4-5 renal failure)",
                 exclusionItem3: "History of dialysis or renal transplantation",
                 exclusionItem4: "Marked hepatic failure",
                 exclusionItem5: "Celiac disease or inflammatory bowel disease (IBD)",
@@ -935,52 +935,52 @@
                 exclusionItem10: "Systemic glucocorticoid (steroid) use for more than 3 months",
                 exclusionItem11: "Single dose intake of at least 80,000 IU of vitamin D within the previous three months (high-dose loading therapy)",
                 exclusionItem12: "Presence of missing records in any data attribute (no imputation was performed)",
-                disclaimer: "<strong>Medical Disclaimer:</strong> This tool is a clinical decision support system developed for physicians to predict vitamin D insufficiency in the Ã‡anakkale region. Calculated risk scores do not constitute direct medical diagnosis or treatment prescription. The physician's clinical judgment and serum measurement values are primary in diagnostic and therapeutic processes."
+                disclaimer: "<strong>Medical Disclaimer:</strong> This tool is a clinical decision support system developed for physicians to predict vitamin D insufficiency in the Çanakkale region. Calculated risk scores do not constitute direct medical diagnosis or treatment prescription. The physician's clinical judgment and serum measurement values are primary in diagnostic and therapeutic processes."
             }
         };
 
         const dynamicTranslations = {
             tr: {
-                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/mÂ² (${category})`,
+                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/m² (${category})`,
                 bmiCategories: {
-                    underweight: "ZayÄ±f",
+                    underweight: "Zayıf",
                     normal: "Normal Kilolu",
                     overweight: "Fazla Kilolu",
                     obese: "Obez"
                 },
                 riskClasses: {
-                    low: "DÃ¼ÅŸÃ¼k Eksiklik Riski",
+                    low: "Düşük Eksiklik Riski",
                     grey: "Gri Zon / Orta Risk",
-                    high: "YÃ¼ksek Eksiklik Riski",
-                    veryhigh: "Ã‡ok YÃ¼ksek Eksiklik Riski"
+                    high: "Yüksek Eksiklik Riski",
+                    veryhigh: "Çok Yüksek Eksiklik Riski"
                 },
                 recTitles: {
-                    low: "DÃ¼ÅŸÃ¼k Risk DÃ¼zeyi",
-                    grey: "Klinik Belirsizlik AlanÄ± (Gri Zon)",
-                    high: "YÃ¼ksek Risk DÃ¼zeyi",
-                    veryhigh: "Ã‡ok YÃ¼ksek Risk DÃ¼zeyi"
+                    low: "Düşük Risk Düzeyi",
+                    grey: "Klinik Belirsizlik Alanı (Gri Zon)",
+                    high: "Yüksek Risk Düzeyi",
+                    veryhigh: "Çok Yüksek Risk Düzeyi"
                 },
                 riskTexts: {
-                    low: "Bu hastada D vitamini eksikliÄŸi olasÄ±lÄ±ÄŸÄ± klinik olarak oldukÃ§a dÃ¼ÅŸÃ¼ktÃ¼r. Bireyin klinik ve demografik profili, D vitamini dÃ¼zeyinin yeterli seviyede (>= 20 ng/mL) olduÄŸunu desteklemektedir.",
-                    grey: "HastanÄ±n D vitamini yetersizliÄŸi riski orta dÃ¼zeydedir ve klinik bir belirsizlik (gri alan) bÃ¶lgesindedir. Bireysel risk faktÃ¶rleri, gÃ¼neÅŸlenme sÄ±klÄ±ÄŸÄ± ve klinik semptomlar deÄŸiÅŸkenlik gÃ¶stermektedir.",
-                    high: "Youden indeksine gÃ¶re optimize edilen klinik kesme noktasÄ±nÄ±n Ã¼zerinde, hastada D vitamini eksikliÄŸi olasÄ±lÄ±ÄŸÄ± yÃ¼ksektir. Demografik ve astronomik faktÃ¶rler, D vitamini dÃ¼zeyinin yetersizlik sÄ±nÄ±rÄ±nÄ±n (< 20 ng/mL) altÄ±nda olma ihtimalinin yÃ¼ksek olduÄŸunu gÃ¶stermektedir.",
-                    veryhigh: "HastanÄ±n D vitamini eksikliÄŸi riski son derece yÃ¼ksektir. Klinik profil ve Ã§evresel faktÃ¶rler, Ã§ok belirgin bir D vitamini yetersizliÄŸi olasÄ±lÄ±ÄŸÄ±na iÅŸaret etmektedir."
+                    low: "Bu hastada D vitamini eksikliği olasılığı klinik olarak oldukça düşüktür. Bireyin klinik ve demografik profili, D vitamini düzeyinin yeterli seviyede (>= 20 ng/mL) olduğunu desteklemektedir.",
+                    grey: "Hastanın D vitamini yetersizliği riski orta düzeydedir ve klinik bir belirsizlik (gri alan) bölgesindedir. Bireysel risk faktörleri, güneşlenme sıklığı ve klinik semptomlar değişkenlik göstermektedir.",
+                    high: "Youden indeksine göre optimize edilen klinik kesme noktasının üzerinde, hastada D vitamini eksikliği olasılığı yüksektir. Demografik ve astronomik faktörler, D vitamini düzeyinin yetersizlik sınırının (< 20 ng/mL) altında olma ihtimalinin yüksek olduğunu göstermektedir.",
+                    veryhigh: "Hastanın D vitamini eksikliği riski son derece yüksektir. Klinik profil ve çevresel faktörler, çok belirgin bir D vitamini yetersizliği olasılığına işaret etmektedir."
                 },
                 sensTexts: {
-                    low: "%94.26 (GerÃ§ek yetersizlik vakalarÄ±nÄ± doÄŸru saptama oranÄ±)",
-                    grey: "Belirlenen Youden kesme noktasÄ±nÄ±n altÄ±ndadÄ±r.",
-                    high: "%70.49 (EksikliÄŸi yakalama hassasiyeti)",
+                    low: "%94.26 (Gerçek yetersizlik vakalarını doğru saptama oranı)",
+                    grey: "Belirlenen Youden kesme noktasının altındadır.",
+                    high: "%70.49 (Eksikliği yakalama hassasiyeti)",
                     veryhigh: "%14.75"
                 },
                 specTexts: {
-                    low: "%50.52 (Yeterli dÃ¼zeydeki bireyleri doÄŸru saptama oranÄ±)",
-                    grey: "Hekimin klinik kanaati ve gÃ¶zlemi Ã¶nceliklidir.",
-                    high: "%74.56 (SaÄŸlÄ±klÄ± kiÅŸileri doÄŸru ayÄ±rt etme gÃ¼cÃ¼)",
-                    veryhigh: "%97.56 (YanlÄ±ÅŸ pozitiflik olasÄ±lÄ±ÄŸÄ± sadece %2.44)"
+                    low: "%50.52 (Yeterli düzeydeki bireyleri doğru saptama oranı)",
+                    grey: "Hekimin klinik kanaati ve gözlemi önceliklidir.",
+                    high: "%74.56 (Sağlıklı kişileri doğru ayırt etme gücü)",
+                    veryhigh: "%97.56 (Yanlış pozitiflik olasılığı sadece %2.44)"
                 }
             },
             en: {
-                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/mÂ² (${category})`,
+                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/m² (${category})`,
                 bmiCategories: {
                     underweight: "Underweight",
                     normal: "Normal Weight",
