@@ -931,11 +931,7 @@
                 </div>
 
 
-                <!-- Risk Status Badge -->
-                <div>
-                    <label style="text-align: center; display: block; font-weight: 600;">D Vitamini Durumu</label>
-                    <div id="riskBadge" class="risk-badge">Hesaplanıyor...</div>
-                </div>
+
 
                 <!-- Recommendations (Clinical Status Wording) -->
                 <div id="recBox" class="rec-box">
@@ -1397,7 +1393,7 @@
                 ${t.reportTitle}
             `;
             document.querySelector(".gauge-label").innerText = t.probDeficiency;
-            document.querySelector(".result-container label").innerText = t.riskLevel;
+
             document.getElementById('recTitle').innerText = t.recHeader;
             
             document.getElementById('sensLabelText').innerText = t.sensLabel;
@@ -1698,19 +1694,21 @@
             // Binary model decision at the Youden-optimal threshold (49.3%)
             // >= 49.3% -> Deficient (▼), < 49.3% -> Sufficient (▲)
             // If in borderline zone, change decision banner to a neutral state
-            let dec, decColor, decBg;
+            let dec, decColor, decBg, decSubText;
             if (isBorderline) {
                 dec = dt.decision.borderline;
                 decColor = "#475569";
                 decBg = "#f1f5f9";
+                decSubText = `${dec.sub} — ${riskClass}`;
             } else {
                 dec = isDef ? dt.decision.deficient : dt.decision.sufficient;
                 decColor = isDef ? "var(--risk-high)" : "var(--risk-low)";
                 decBg = isDef ? "var(--risk-high-bg)" : "var(--risk-low-bg)";
+                decSubText = `${dec.sub} — ${riskClass}`;
             }
             document.getElementById('decisionArrow').innerText = dec.arrow;
             document.getElementById('decisionLabel').innerText = dec.label;
-            document.getElementById('decisionSub').innerText = dec.sub;
+            document.getElementById('decisionSub').innerText = decSubText;
             const banner = document.getElementById('decisionBanner');
             banner.style.color = decColor;
             banner.style.backgroundColor = decBg;
@@ -1731,13 +1729,6 @@
             // Set colors dynamically
             circle.style.stroke = isBorderline ? "#475569" : riskColor; // Neutral stroke for borderline gauge
             
-            const badge = document.getElementById('riskBadge');
-            badge.innerText = riskClass;
-            badge.style.backgroundColor = riskBg;
-            badge.style.color = riskColor;
-            badge.style.borderColor = riskColor;
-            badge.style.border = "1px solid " + riskColor;
-
             const recBox = document.getElementById('recBox');
             recBox.style.borderLeftColor = isBorderline ? "#475569" : riskColor;
             document.getElementById('recHeader').innerHTML = `
