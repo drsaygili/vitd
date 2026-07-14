@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D Vitamini Eksikliği Olasılık Hesaplayıcı (25(OH)D &lt; 20 ng/mL)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2B547E;
+            --primary-light: #4A779D;
+            --primary-bg: #F4F7FA;
+            --accent: #0ea5e9;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            
+            /* Risk Colors */
+            --risk-low: #10b981;
+            --risk-low-bg: #ecfdf5;
+            --risk-grey: #f59e0b;
+            --risk-grey-bg: #fffbeb;
+            --risk-high: #ef4444;
+            --risk-high-bg: #fef2f2;
+            --risk-veryhigh: #7f1d1d;
+            --risk-veryhigh-bg: #f87171;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            max-width: 900px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Card Base */
+        .card {
+            background-color: var(--white);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--primary-bg);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 480px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 480px) {
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            background-color: var(--white);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(43, 84, 126, 0.15);
+        }
+
+        .input-helper {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Results Panel */
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+        }
+
+        /* Binary model decision banner */
+        .decision-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1rem;
+            border-radius: 0.9rem;
+            border: 2px solid var(--border);
+            font-weight: 700;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .decision-arrow {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .decision-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
+        .decision-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .decision-sub {
+            font-size: 0.78rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .gauge-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .gauge-svg {
+            width: 200px;
+            height: 200px;
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 12;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 12;
+            stroke-dasharray: 565.48; /* 2 * PI * 90 */
+            stroke-dashoffset: 565.48;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.5s ease;
+        }
+
+        .gauge-text {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .gauge-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .gauge-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .gauge-ci {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 1px 6px;
+            border-radius: 4px;
+            border: 1px dashed rgba(0, 0, 0, 0.08);
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            width: 100%;
+            margin-top: 0.5rem;
+            transition: var(--transition);
+        }
+
+        /* Recommendations */
+        .rec-box {
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid var(--border);
+            font-size: 0.95rem;
+            background-color: var(--primary-bg);
+            transition: var(--transition);
+        }
+
+        .rec-box h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Diagnostic stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            background-color: var(--primary-bg);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Model metrics card */
+        .metrics-card {
+            grid-column: span 2;
+            background-color: var(--white);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .metrics-card {
+                grid-column: span 1;
+            }
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .metrics-grid > div:last-child {
+                grid-column: span 2;
+            }
+        }
+
+        .metric-box {
+            padding: 0.75rem;
+            background-color: var(--primary-bg);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .metric-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .metric-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.25rem;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            grid-column: span 2;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .disclaimer {
+                grid-column: span 1;
+            }
+        }
+
+        /* Inline SVG Icons */
+        .icon {
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+            fill: currentColor;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Graphical Threshold Bar Styling */
+        .threshold-bar-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .threshold-bar-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            display: block;
+            color: var(--text-dark);
+        }
+
+        .threshold-bar {
+            position: relative;
+            height: 20px;
+            background: linear-gradient(to right, #10b981 0%, #10b981 20%, #f59e0b 20%, #f59e0b 49.3%, #ef4444 49.3%, #ef4444 80%, #7f1d1d 80%, #7f1d1d 100%);
+            border-radius: 6px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .threshold-marker {
+            position: absolute;
+            top: -8px;
+            left: 0%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 36px;
+            background-color: #0f172a;
+            border-radius: 3px;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .threshold-marker-value {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            background: white;
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+        }
+
+        .threshold-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        /* Threshold selection rationale */
+        .threshold-rationale {
+            margin-top: 1.25rem;
+        }
+
+        .rationale-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            user-select: none;
+            padding: 0.4rem 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px dashed var(--border);
+            transition: var(--transition);
+        }
+
+        .rationale-title:hover {
+            background-color: var(--primary-bg);
+        }
+
+        .rationale-caret {
+            display: inline-block;
+            transition: transform 0.25s ease;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .rationale-title.open .rationale-caret {
+            transform: rotate(90deg);
+        }
+
+        .rationale-body {
+            display: none;
+            margin-top: 0.5rem;
+        }
+
+        .rationale-body.open {
+            display: block;
+        }
+
+        /* Stats group header (which risk group these metrics belong to) */
+        .stats-group-title {
+            grid-column: span 2;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.35rem;
+            padding: 0.4rem 0.65rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--border);
+            background-color: var(--primary-bg);
+            color: var(--text-dark);
+        }
+
+        /* Paradox-zone note under the gauge (only 49.3–50%) */
+        .gauge-paradox-note {
+            max-width: 460px;
+            margin: 0.75rem auto 0;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.74rem;
+            line-height: 1.4;
+            color: #92400e;
+            background-color: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 0.5rem;
+            text-align: left;
+        }
+
+        /* Youden decision arrows on the threshold bar */
+        .youden-arrows {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.55rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .youden-arrow-left {
+            color: var(--risk-low);
+        }
+
+        .youden-arrow-right {
+            color: var(--risk-high);
+        }
+
+        .youden-split-note {
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Youden split line on the bar (49.3%) */
+        .youden-line {
+            position: absolute;
+            top: -4px;
+            bottom: -4px;
+            left: 49.3%;
+            width: 2px;
+            background: #1e293b;
+            opacity: 0.55;
+        }
+
+        /* Patient's own result marker — thicker/emphasised */
+        .threshold-marker {
+            z-index: 5;
+        }
+
+        .rationale-item {
+            font-size: 0.8rem;
+            line-height: 1.45;
+            padding: 0.55rem 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--border);
+            background-color: var(--primary-bg);
+        }
+
+        .rationale-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .rationale-item strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .rationale-metric {
+            display: inline-block;
+            font-weight: 700;
+            padding: 0.05rem 0.35rem;
+            border-radius: 0.3rem;
+            font-size: 0.76rem;
+        }
+
+        /* Tooltip container */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* Tooltip text */
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 290px;
+            background-color: var(--text-dark);
+            color: var(--white);
+            text-align: left;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            font-weight: 400;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+
+        /* Tooltip arrow */
+        .tooltip::before {
+            content: "";
+            position: absolute;
+            bottom: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text-dark) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+
+        /* Show tooltip on hover */
+        .tooltip:hover::after, .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Language Dropdown Container */
+        .lang-dropdown {
+            position: relative;
+            z-index: 100;
+        }
+
+        .lang-dropbtn {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.4rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background-color: var(--white);
+            color: var(--text-dark);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lang-dropbtn:hover {
+            border-color: var(--primary-light);
+            background-color: var(--primary-bg);
+        }
+
+        .lang-dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: auto;
+            top: 120%;
+            background-color: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-md);
+            min-width: 130px;
+            overflow: hidden;
+            z-index: 101;
+            animation: dropdownFadeIn 0.2s ease;
+        }
+
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.8rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .lang-dropdown-content a:hover {
+            background-color: var(--primary-bg);
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .flex-center {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="flex-center" style="justify-content: center; margin-bottom: 0.5rem; width: 100%;">
+            <svg class="icon" style="color: var(--primary); width: 2.5rem; height: 2.5rem; flex-shrink: 0;" viewBox="0 0 24 24">
+                <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75zM6.16 5.1a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06L6.16 6.16a.75.75 0 0 1 0-1.06zm11.68 0a.75.75 0 0 1 0 1.06l-1.59 1.59a.75.75 0 1 1-1.06-1.06l1.59-1.59a.75.75 0 0 1 1.06 0zM3 12a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12zm15 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5h-2.25A.75.75 0 0 1 18 12zM7.75 16.25a.75.75 0 0 1 0 1.06l-1.59 1.59a.75.75 0 1 1-1.06-1.06l1.59-1.59a.75.75 0 0 1 1.06 0zm9.56 0a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06l-1.59-1.59a.75.75 0 0 1 0-1.06zM12 18.75a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75zM12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/>
+            </svg>
+            <h1 id="headerTitle" style="margin: 0; line-height: 1.2;">D Vitamini Eksikliği Olasılık Hesaplayıcı <span style="font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;">(25(OH)D &lt; 20 ng/mL)</span></h1>
+        </div>
+        
+        <!-- Subtitle and Dropdown aligned next to each other -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
+            <p id="headerSubtitle" style="margin: 0;">Lojistik Regresyon İstatistiksel Modeline Dayalı Klinik Karar Destek Sistemi</p>
+            
+            <div class="lang-dropdown">
+                <button class="lang-dropbtn" onclick="toggleLangDropdown(event)">
+                    <span id="activeLangFlag" style="display: flex; align-items: center;"></span>
+                    <span id="activeLangText">TR</span>
+                    <svg style="width: 0.6rem; height: 0.6rem; color: var(--text-muted); margin-left: 0.1rem;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="langDropdownMenu" class="lang-dropdown-content">
+                    <a href="javascript:void(0)" onclick="setLanguage('tr')">
+                        <svg viewBox="0 0 30 20" style="width: 1.25rem; height: 0.85rem; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+                            <rect width="30" height="20" fill="#e30a17"/>
+                            <circle cx="12" cy="10" r="5" fill="#fff"/>
+                            <circle cx="13.2" cy="10" r="4" fill="#e30a17"/>
+                            <polygon points="17.2,10 19,10.6 17.5,11.7 18.1,13.5 16.6,12.4 15.1,13.5 15.7,11.7 14.2,10.6 16,10.6 16.6,8.8" fill="#fff" transform="rotate(-18, 16.6, 10.7)"/>
+                        </svg>
+                        <span>Türkçe</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="setLanguage('en')">
+                        <svg viewBox="0 0 60 30" style="width: 1.25rem; height: 0.85rem; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+                            <rect width="60" height="30" fill="#012169"/>
+                            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/>
+                            <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/>
+                            <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/>
+                        </svg>
+                        <span>English</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Input Card -->
+        <div class="card">
+            <h2 class="card-title" id="inputCardTitle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                Hasta Parametreleri
+            </h2>
+            <form id="riskForm">
+                <div class="form-grid">
+                    <!-- Age -->
+                    <div class="form-group">
+                        <label for="age" id="ageLabel">Yaş</label>
+                        <input type="number" id="age" min="1" max="120" value="45" required>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label for="gender" id="genderLabel">Cinsiyet</label>
+                        <select id="gender" required>
+                            <option value="1">Kadın</option>
+                            <option value="0">Erkek</option>
+                        </select>
+                    </div>
+
+                    <!-- Height -->
+                    <div class="form-group">
+                        <label for="height" id="heightLabel">Boy (cm)</label>
+                        <input type="number" id="height" min="100" max="250" value="165" required>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="form-group">
+                        <label for="weight" id="weightLabel">Kilo (kg)</label>
+                        <input type="number" id="weight" min="30" max="250" value="55" placeholder="55" required>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group full-width">
+                        <label for="date" id="dateLabel">Kan Örneği / Başvuru Tarihi</label>
+                        <input type="date" id="date" required>
+                        <div class="input-helper" id="dateHelper">Mevsimsel güneş döngüsünü (sin/cos gün değerlerini) hesaplamak için kullanılır.</div>
+                    </div>
+
+                    <!-- Supplementation -->
+                    <div class="form-group full-width">
+                        <label for="supplement" style="display: flex; align-items: center; gap: 0.35rem;">
+                            <span id="suppLabelText">Son Üç Ay İçerisinde D Vitamini Takviyesi Kullanımı</span>
+                            <span class="tooltip" id="suppTooltip" data-tooltip="Çalışma tanımına göre: Son 3 ay içinde reçete kayıtlarına göre günlük en az 1000 IU (1000 IU/gün) D vitamini kullanmış olmak (yükleme veya idame tedavisi ayrımı yapılmaksızın).">
+                                <svg style="width: 1.05rem; height: 1.05rem; color: var(--text-muted); cursor: pointer; vertical-align: middle;" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+                                </svg>
+                            </span>
+                        </label>
+                        <select id="supplement" required>
+                            <option value="0">YOK</option>
+                            <option value="1">VAR</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card">
+            <h2 class="card-title" id="resultCardTitle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                Model Olasılık Raporu
+            </h2>
+            
+            <!-- Age Warning Display (hidden by default) -->
+            <div id="ageWarningContainer" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 350px; text-align: center; gap: 1rem; padding: 1rem;">
+                <svg style="width: 4rem; height: 4rem; color: var(--risk-grey);" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <h3 id="ageWarningTitle" style="color: var(--primary); font-weight: 600; font-size: 1.15rem;">Analiz Yapılamaz</h3>
+                <p id="ageWarningText" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; max-width: 280px;">Model bu yaş grubunda eğitilmedi. Analiz yalnızca 18-85 yaş aralığındaki yetişkin hastalar için geçerlidir.</p>
+            </div>
+
+            <div class="result-container" id="normalResultContainer">
+                <!-- Binary model decision banner -->
+                <div id="decisionBanner" class="decision-banner">
+                    <span id="decisionArrow" class="decision-arrow">—</span>
+                    <span class="decision-text">
+                        <span id="decisionLabel" class="decision-label">—</span>
+                        <span id="decisionSub" class="decision-sub"></span>
+                    </span>
+                </div>
+
+                <!-- Circular Gauge -->
+                <div class="gauge-wrapper">
+                    <svg class="gauge-svg" viewBox="0 0 200 200">
+                        <circle class="gauge-bg" cx="100" cy="100" r="90" />
+                        <circle id="gaugeFill" class="gauge-fill" cx="100" cy="100" r="90" />
+                    </svg>
+                    <div class="gauge-text">
+                        <div id="gaugeValue" class="gauge-value">0.0%</div>
+                        <div id="gaugeLabel" class="gauge-label">Eksiklik Olasılığı</div>
+                        <div id="gaugeCI" class="gauge-ci"></div>
+                    </div>
+                </div>
+                <div id="gaugeParadoxNote" class="gauge-paradox-note" style="display:none;"></div>
+
+                <!-- Risk Status Badge -->
+                <div>
+                    <label style="text-align: center; display: block; font-weight: 600;">D Vitamini Durumu</label>
+                    <div id="riskBadge" class="risk-badge">Hesaplanıyor...</div>
+                </div>
+
+                <!-- Recommendations (Clinical Status Wording) -->
+                <div id="recBox" class="rec-box">
+                    <h4 id="recHeader">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span id="recTitle">Klinik Durum Açıklaması</span>
+                    </h4>
+                    <p id="recText"></p>
+                </div>
+
+                <!-- Graphical Threshold Bar -->
+                <div class="threshold-bar-container">
+                    <span class="threshold-bar-title">Eksiklik için Olasılık Eşikleri ve Hasta Konumu</span>
+                    <div class="threshold-bar">
+                        <div class="youden-line"></div>
+                        <div id="riskMarker" class="threshold-marker">
+                            <div id="markerVal" class="threshold-marker-value">0%</div>
+                        </div>
+                    </div>
+                    <div class="youden-arrows">
+                        <span class="youden-arrow-left" id="youdenArrowLeft">◄ Yeterli (&lt; %49.3)</span>
+                        <span class="youden-split-note" id="youdenSplitNote">Youden eşiği %49.3</span>
+                        <span class="youden-arrow-right" id="youdenArrowRight">Eksik (&ge; %49.3) ►</span>
+                    </div>
+                    <div class="threshold-labels">
+                        <span style="color: #10b981;" id="threshLabel1">Yeterli, çok olası<br>(0–%20)</span>
+                        <span style="color: #d97706;" id="threshLabel2">Yeterli, olası<br>(%20–49.3)</span>
+                        <span style="color: #ef4444;" id="threshLabel3">Eksik, olası<br>(%49.3–80)</span>
+                        <span style="color: #7f1d1d;" id="threshLabel4">Eksik, çok olası<br>(%80–100)</span>
+                    </div>
+
+                    <!-- Why these thresholds were chosen (collapsible) -->
+                    <div class="threshold-rationale">
+                        <div class="rationale-title" id="rationaleTitle" onclick="toggleRationale()" role="button" tabindex="0">
+                            <span class="rationale-caret">▶</span>
+                            <span id="rationaleTitleText">Eşiklerin Seçilme Gerekçesi</span>
+                        </div>
+                        <div class="rationale-body" id="rationaleBody">
+                        <div class="rationale-item" style="border-left-color: #10b981;" id="rationaleLow">
+                            <strong>%20 — Dışlama sınırı (rule-out):</strong> Yüksek <span class="rationale-metric" style="background:#ecfdf5; color:#10b981;">Duyarlılık %98.0</span> ve <span class="rationale-metric" style="background:#ecfdf5; color:#10b981;">NPV %96.4</span> hedeflendiği için seçildi. Bu sınırın altında eksiklik güvenle dışlanır (244 eksik hastadan yalnızca 5'i kaçar).
+                        </div>
+                        <div class="rationale-item" style="border-left-color: #f59e0b;" id="rationaleYouden">
+                            <strong>%49.3 — Youden-optimal eşik:</strong> Duyarlılık + özgüllüğü birlikte en iyileyen matematiksel denge noktası (eğitim setinde belirlendi). <span class="rationale-metric" style="background:#fffbeb; color:#d97706;">Duyarlılık %82.0</span> · <span class="rationale-metric" style="background:#fffbeb; color:#d97706;">Özgüllük %72.5</span> (doğruluk %76.8). Tek eşikli karar için ana çalışma noktasıdır.
+                        </div>
+                        <div class="rationale-item" style="border-left-color: #7f1d1d;" id="rationaleHigh">
+                            <strong>%80 — Dahil etme sınırı (rule-in):</strong> Yüksek <span class="rationale-metric" style="background:#fef2f2; color:#b91c1c;">Özgüllük %96.9</span> ve <span class="rationale-metric" style="background:#fef2f2; color:#b91c1c;">PPV %76.3</span> hedeflendiği için seçildi. Bu sınırın üstünde eksiklik yüksek güvenle doğrulanır (yalnızca 9 yanlış pozitif).
+                        </div>
+                        </div><!-- /rationale-body -->
+                    </div>
+                </div>
+
+                <!-- Dynamic diagnostic values (moved below threshold table) -->
+                <div class="stats-grid" style="margin-top: 1.25rem; display: none;">
+                    <span class="stats-group-title" id="statsGroupTitle">Bu olasılık grubu için tanısal metrikler</span>
+                    <div class="stat-item">
+                        <span class="stat-label" id="sensLabelText">Sensitivite (Duyarlılık)</span>
+                        <span id="sensValue" class="stat-value">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" id="specLabelText">Spesifite (Özgünlük)</span>
+                        <span id="specValue" class="stat-value">-</span>
+                    </div>
+                    <div class="stat-item" style="grid-column: span 2; border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.25rem;">
+                        <span class="stat-label" id="bmiLabelText">Hesaplanan BMI (VKİ)</span>
+                        <span id="bmiValue" class="stat-value">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model parameters Card -->
+        <div class="metrics-card" id="metricsCard" style="margin-top: 1.5rem;">
+            <h2 class="card-title" id="metricsCardTitle" style="margin-bottom: 0.75rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 7h-4v3h4v2h-4v3h-2v-3H7v-2h4v-3H7V8h4V5h2v3h4v2z"/></svg>
+                Geliştirilen Model İstatistiksel Metrikleri (Test Seti Üzerinde)
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);" id="metricsCardSub">Bu hesaplayıcı, Çanakkale enlemindeki (40.15° N) güneş açısı verileri ve 1768 hastanın D vitamini düzeyleri ile eğitilen Lojistik Regresyon modelinin formülünü kullanmaktadır.</p>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-title" id="mTitle1">Test Seti AUC</div>
+                    <div class="metric-val">0.832</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp1">[95% GA: 0.794 - 0.869]</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-title" id="mTitle2">Brier Skoru</div>
+                    <div class="metric-val">0.164</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp2"></div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-title" id="mTitle3">Youden Eşiği</div>
+                    <div class="metric-val">0.493</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp3">Matematiksel Eşik</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-title" id="mTitle4">Kalibrasyon Eğimi</div>
+                    <div class="metric-val">1.195</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp4">Kalibrasyon Eğrisi</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-title" id="mTitle5">Kalibrasyon Kesişimi</div>
+                    <div class="metric-val">0.020</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;" id="mHelp5">Calibration-in-the-large</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Exclusion Criteria Card -->
+        <div class="metrics-card" style="margin-top: 1.5rem;">
+            <h2 class="card-title" id="exclusionCardTitle" style="margin-bottom: 0.75rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                Çalışma Popülasyonu Dışlama Kriterleri
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;" id="exclusionCardSub">Modelin doğruluğu ve güvenilirliği açısından, aşağıdaki kriterlerden herhangi birine sahip olan hastalar çalışma veri setine dahil edilmemiştir:</p>
+            <ul style="font-size: 0.82rem; color: var(--text-dark); padding-left: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1.5rem; line-height: 1.4;">
+                <li id="exItem1">Gebelik veya laktasyon (emzirme) dönemi</li>
+                <li id="exItem2">GFR &lt; 30 mL/dk/1.73 m² (Evre 4-5 böbrek yetmezliği)</li>
+                <li id="exItem3">Diyaliz veya renal transplantasyon (böbrek nakli) öyküsü</li>
+                <li id="exItem4">Belirgin karaciğer yetmezliği</li>
+                <li id="exItem5">Çölyak hastalığı veya inflamatuvar bağırsak hastalığı (İBH)</li>
+                <li id="exItem6">Bariatrik (tüp mide/bypass) veya gastrointestinal cerrahi öyküsü</li>
+                <li id="exItem7">Primer hipoparatiroidi veya hiperparatiroidi</li>
+                <li id="exItem8">Aktif malignite (kanser) veya kemik metastazı</li>
+                <li id="exItem9">Antiepileptik veya antiretroviral ilaç kullanımı</li>
+                <li id="exItem10">3 aydan uzun süre sistemik glukokortikoid (steroid) kullanımı</li>
+                <li id="exItem11">Son 3 ay içinde tek seferde en az 80.000 IU veya üzeri tek doz D vitamini almış olmak (yüksek doz yükleme tedavisi)</li>
+                <li id="exItem12">Herhangi bir veri özniteliğinde eksik kayıt bulunması (imputasyon yapılmamıştır)</li>
+            </ul>
+        </div>
+
+        <div class="disclaimer" id="disclaimerText">
+            <strong>Tıbbi Sorumluluk Reddi:</strong> Bu araç, yalnızca araştırma ve eğitim amaçlı geliştirilmiş deneysel bir <strong>klinik karar destek sistemidir</strong> ve tıbbi cihaz olarak onaylanmamıştır. Model, tek merkezli ve retrospektif bir veri kümesi üzerinde, Çanakkale enlemine (40.15° N) özgü mevsimsel değişkenlerle geliştirilmiştir; bu nedenle sonuçlar farklı popülasyonlara, coğrafyalara veya klinik ortamlara genellenemez ve dış (bağımsız) validasyonu henüz yapılmamıştır. Ürettiği olasılık tahminleri hiçbir koşulda tanı, tarama, tedavi veya ilaç reçetesi yerine geçmez; kesin tanı serum 25(OH)D ölçümü ile konur. Tüm klinik kararlar, hastanın bütüncül değerlendirmesine erişimi olan yetkili bir hekimin sorumluluğu ve kanaati altında verilmelidir. Yazarlar, bu aracın kullanımından doğabilecek herhangi bir klinik sonuçtan sorumlu tutulamaz.
+        </div>
+    </div>
+
+    <script>
+        // Language Translations
+        const translations = {
+            tr: {
+                title: "D Vitamini Eksikliği Olasılık Hesaplayıcı <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
+                subtitle: "Lojistik Regresyon İstatistiksel Modeline Dayalı Klinik Karar Destek Sistemi",
+                patientParams: "Hasta Parametreleri",
+                age: "Yaş",
+                gender: "Cinsiyet",
+                genderFemale: "Kadın",
+                genderMale: "Erkek",
+                height: "Boy (cm)",
+                weight: "Kilo (kg)",
+                dateLabel: "Kan Örneği / Başvuru Tarihi",
+                dateHelper: "Mevsimsel güneş döngüsünü (sin/cos gün değerlerini) hesaplamak için kullanılır.",
+                suppLabel: "Son Üç Ay İçerisinde D Vitamini Takviyesi Kullanımı",
+                suppTooltip: "Çalışma tanımına göre: Son 3 ay içinde reçete kayıtlarına göre günlük en az 1000 IU (1000 IU/gün) D vitamini kullanmış olmak (yükleme veya idame tedavisi ayrımı yapılmaksızın).",
+                suppNo: "YOK",
+                suppYes: "VAR",
+                reportTitle: "Model Olasılık Raporu",
+                probDeficiency: "Eksiklik Olasılığı",
+                riskLevel: "D Vitamini Durumu ve Olasılık Grubu",
+                recHeader: "Klinik Durum Açıklaması",
+                sensLabel: "Sensitivite (Duyarlılık)",
+                specLabel: "Spesifite (Özgünlük)",
+                calculatedBmi: "Hesaplanan BMI (VKİ)",
+                thresholdTitle: "Eksiklik için Olasılık Eşikleri ve Hasta Konumu",
+                threshLow: "Yeterli, çok olası<br>(0–%20)",
+                threshGrey: "Yeterli, olası<br>(%20–49.3)",
+                threshHigh: "Eksik, olası<br>(%49.3–80)",
+                threshVeryHigh: "Eksik, çok olası<br>(%80–100)",
+                rationaleTitle: "Eşiklerin Seçilme Gerekçesi",
+                rationaleLow: "<strong>%20 — Dışlama sınırı (rule-out):</strong> Yüksek <span class='rationale-metric' style='background:#ecfdf5; color:#10b981;'>Duyarlılık %98.0</span> hedeflendiği için seçildi. Bu sınırın altında eksiklik yüksek güvenle dışlanır.",
+                rationaleYouden: "<strong>%49.3 — Youden-optimal eşik:</strong> Duyarlılık + özgüllüğü birlikte en iyileyen matematiksel denge noktasıdır (eğitim setinde belirlendi). Bu eşikte <span class='rationale-metric' style='background:#fffbeb; color:#d97706;'>Duyarlılık %82.0</span> ve <span class='rationale-metric' style='background:#fffbeb; color:#d97706;'>Özgüllük %72.5</span> elde edilmiştir.",
+                rationaleHigh: "<strong>%80 — Dahil etme sınırı (rule-in):</strong> Yüksek <span class='rationale-metric' style='background:#fef2f2; color:#b91c1c;'>Özgüllük %96.9</span> hedeflendiği için seçildi. Bu sınırın üstünde eksiklik yüksek güvenle doğrulanır.",
+                metricsTitle: "Geliştirilen Model İstatistiksel Metrikleri (Test Seti Üzerinde)",
+                metricsSub: "Bu hesaplayıcı, Çanakkale enlemindeki (40.15° N) güneş açısı verileri ve 1768 hastanın D vitamini düzeyleri ile eğitilen Lojistik Regresyon modelinin formülünü kullanmaktadır.",
+                metricAuc: "Test Seti AUC",
+                metricBrier: "Kalibrasyon Hata Skoru",
+                metricYouden: "Youden Eşiği",
+                metricSlope: "Kalibrasyon Eğimi",
+                metricIntercept: "Kalibrasyon Kesişimi",
+                metricBrierHelper: "",
+                metricYoudenHelper: "Matematiksel Eşik",
+                metricSlopeHelper: "Kalibrasyon Eğrisi",
+                metricInterceptHelper: "Calibration-in-the-large",
+                exclusionTitle: "Çalışma Popülasyonu Dışlama Kriterleri",
+                exclusionSub: "Modelin doğruluğu ve güvenilirliği açısından, aşağıdaki kriterlerden herhangi birine sahip olan hastalar çalışma veri setine dahil edilmemiştir:",
+                exclusionItem1: "Gebelik veya laktasyon (emzirme) dönemi",
+                exclusionItem2: "GFR &lt; 30 mL/dk/1.73 m² (Evre 4-5 böbrek yetmezliği)",
+                exclusionItem3: "Diyaliz veya renal transplantasyon (böbrek nakli) öyküsü",
+                exclusionItem4: "Belirgin karaciğer yetmezliği",
+                exclusionItem5: "Çölyak hastalığı veya inflamatuvar bağırsak hastalığı (İBH)",
+                exclusionItem6: "Bariatrik (tüp mide/bypass) veya gastrointestinal cerrahi öyküsü",
+                exclusionItem7: "Primer hipoparatiroidi veya hiperparatiroidi",
+                exclusionItem8: "Aktif malignite (kanser) veya kemik metastazı",
+                exclusionItem9: "Antiepileptik veya antiretroviral ilaç kullanımı",
+                exclusionItem10: "3 aydan uzun süre sistemik glukokortikoid (steroid) kullanımı",
+                exclusionItem11: "Son 3 ay içinde tek seferde en az 80.000 IU veya üzeri tek doz D vitamini almış olmak (yüksek doz yükleme tedavisi)",
+                exclusionItem12: "Herhangi bir veri özniteliğinde eksik kayıt bulunması (imputasyon yapılmamıştır)",
+                disclaimer: "<strong>Tıbbi Sorumluluk Reddi:</strong> Bu araç, yalnızca araştırma ve eğitim amaçlı geliştirilmiş deneysel bir <strong>klinik karar destek sistemidir</strong> ve tıbbi cihaz olarak onaylanmamıştır. Model, tek merkezli ve retrospektif bir veri kümesi üzerinde, Çanakkale enlemine (40.15° N) özgü mevsimsel değişkenlerle geliştirilmiştir; bu nedenle sonuçlar farklı popülasyonlara, coğrafyalara veya klinik ortamlara genellenemez ve dış (bağımsız) validasyonu henüz yapılmamıştır. Ürettiği olasılık tahminleri hiçbir koşulda tanı, tarama, tedavi veya ilaç reçetesi yerine geçmez; kesin tanı serum 25(OH)D ölçümü ile konur. Tüm klinik kararlar, hastanın bütüncül değerlendirmesine erişimi olan yetkili bir hekimin sorumluluğu ve kanaati altında verilmelidir. Yazarlar, bu aracın kullanımından doğabilecek herhangi bir klinik sonuçtan sorumlu tutulamaz.",
+                ageWarningTitle: "Uyuşmayan Popülasyon",
+                ageWarningText: "Model bu yaş grubunda eğitilmedi. Analiz yalnızca 18-85 yaş aralığındaki yetişkin hastalar için geçerlidir."
+            },
+            en: {
+                title: "Vitamin D Deficiency Probability Calculator <span style='font-size: 1.3rem; font-weight: 500; color: var(--text-muted); opacity: 0.85;'>(25(OH)D &lt; 20 ng/mL)</span>",
+                subtitle: "Clinical Decision Support System Based on a Logistic Regression Statistical Model",
+                patientParams: "Patient Parameters",
+                age: "Age",
+                gender: "Gender",
+                genderFemale: "Female",
+                genderMale: "Male",
+                height: "Height (cm)",
+                weight: "Weight (kg)",
+                dateLabel: "Blood Sample / Admission Date",
+                dateHelper: "Used to calculate the seasonal solar cycle (sin/cos day values).",
+                suppLabel: "Vitamin D Supplementation Usage Within the Previous Three Months",
+                suppTooltip: "According to the study definition: Having used at least 1000 IU/day of vitamin D within the previous three months based on prescription records (no distinction made between loading and maintenance therapy).",
+                suppNo: "NO",
+                suppYes: "YES",
+                reportTitle: "Model Probability Report",
+                probDeficiency: "Probability of Deficiency",
+                riskLevel: "Vitamin D Status and Probability Group",
+                recHeader: "Clinical Status Description",
+                sensLabel: "Sensitivity",
+                specLabel: "Specificity",
+                calculatedBmi: "Calculated BMI",
+                thresholdTitle: "Probability Thresholds and Patient Position for Deficiency",
+                threshLow: "Sufficient, very likely<br>(0–20%)",
+                threshGrey: "Sufficient, likely<br>(20–49.3%)",
+                threshHigh: "Deficient, likely<br>(49.3–80%)",
+                threshVeryHigh: "Deficient, very likely<br>(80–100%)",
+                rationaleTitle: "Rationale for the Selected Thresholds",
+                rationaleLow: "<strong>20% — Rule-out boundary:</strong> Selected to target high <span class='rationale-metric' style='background:#ecfdf5; color:#10b981;'>Sensitivity 98.0%</span>. Below this cut-off, deficiency is safely ruled out.",
+                rationaleYouden: "<strong>49.3% — Youden-optimal threshold:</strong> The mathematical balance point that jointly maximises sensitivity and specificity (derived on the training set). At this threshold, <span class='rationale-metric' style='background:#fffbeb; color:#d97706;'>Sensitivity 82.0%</span> and <span class='rationale-metric' style='background:#fffbeb; color:#d97706;'>Specificity 72.5%</span> are achieved.",
+                rationaleHigh: "<strong>80% — Rule-in boundary:</strong> Selected to target high <span class='rationale-metric' style='background:#fef2f2; color:#b91c1c;'>Specificity 96.9%</span>. Above this cut-off, deficiency is confirmed with high confidence.",
+                metricsTitle: "Statistical Metrics of the Developed Model (On Test Set)",
+                metricsSub: "This calculator utilizes the formula of the Logistic Regression model trained with 1768 patients' vitamin D levels and seasonal solar angle data in the latitude of Çanakkale (40.15° N).",
+                metricAuc: "Test Set AUC",
+                metricBrier: "Calibration Error Score",
+                metricYouden: "Youden Threshold",
+                metricSlope: "Calibration Slope",
+                metricIntercept: "Calibration Intercept",
+                metricBrierHelper: "",
+                metricYoudenHelper: "Mathematical Threshold",
+                metricSlopeHelper: "Calibration Curve",
+                metricInterceptHelper: "Calibration-in-the-large",
+                exclusionTitle: "Study Population Exclusion Criteria",
+                exclusionSub: "For the accuracy and generalizability of the model, patients with any of the following criteria were excluded from the study dataset:",
+                exclusionItem1: "Pregnancy or lactation period",
+                exclusionItem2: "GFR &lt; 30 mL/min/1.73 m² (Stage 4-5 renal failure)",
+                exclusionItem3: "History of dialysis or renal transplantation",
+                exclusionItem4: "Marked hepatic failure",
+                exclusionItem5: "Celiac disease or inflammatory bowel disease (IBD)",
+                exclusionItem6: "History of bariatric (sleeve gastrectomy/bypass) or gastrointestinal surgery",
+                exclusionItem7: "Primary hypoparathyroidism or hyperparathyroidism",
+                exclusionItem8: "Active malignancy or bone metastasis",
+                exclusionItem9: "Use of antiepileptic or antiretroviral medication",
+                exclusionItem10: "Systemic glucocorticoid (steroid) use for more than 3 months",
+                exclusionItem11: "Single dose intake of at least 80,000 IU of vitamin D within the previous three months (high-dose loading therapy)",
+                exclusionItem12: "Presence of missing records in any data attribute (no imputation was performed)",
+                disclaimer: "<strong>Medical Disclaimer:</strong> This tool is an experimental <strong>clinical decision support system</strong> developed for research and educational purposes only and is not an approved medical device. The model was developed on a single-centre, retrospective dataset using seasonal variables specific to the latitude of Çanakkale (40.15° N); accordingly, its outputs cannot be generalised to other populations, geographies or clinical settings, and it has not yet undergone external (independent) validation. The probability estimates it produces do not, under any circumstances, replace diagnosis, screening, treatment or prescription; a definitive diagnosis requires serum 25(OH)D measurement. All clinical decisions must be made under the responsibility and judgment of a qualified physician with access to the patient's complete clinical assessment. The authors accept no liability for any clinical outcome arising from the use of this tool.",
+                ageWarningTitle: "Incompatible Population",
+                ageWarningText: "The model was not trained in this age group. Analysis is only valid for adult patients between 18 and 85 years of age."
+            }
+        };
+
+        const dynamicTranslations = {
+            tr: {
+                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/m² (${category})`,
+                bmiCategories: {
+                    underweight: "Zayıf",
+                    normal: "Normal Kilolu",
+                    overweight: "Fazla Kilolu",
+                    obese: "Obez"
+                },
+                riskClasses: {
+                    low: "Yeterli, Çok Olası",
+                    grey: "Yeterli, Olası",
+                    high: "Eksik, Olası",
+                    veryhigh: "Eksik, Çok Olası"
+                },
+                recTitles: {
+                    low: "Klinik Dışlama Alanı (Rule-out)",
+                    grey: "Model Karar Sınırı",
+                    high: "Model Karar Sınırı",
+                    veryhigh: "Klinik Doğrulama Alanı (Rule-in)"
+                },
+                riskTexts: {
+                    low: (pct, diff) => `Hastanın tahmin edilen eksiklik olasılığı %${pct.toFixed(1)} olup, Youden karar eşiğinin (%49.3) altındadır. Bu olasılık düzeyinde durum 'Yeterli' olarak sınıflandırılır.<br><br><strong>Youden karar sınırına olan uzaklık: %${diff.toFixed(1)}</strong>`,
+                    grey: (pct, diff) => `Hastanın tahmin edilen eksiklik olasılığı %${pct.toFixed(1)} olup, Youden karar eşiğinin (%49.3) altındadır. Bu olasılık düzeyinde durum 'Yeterli' olarak sınıflandırılır.<br><br><strong>Youden karar sınırına olan uzaklık: %${diff.toFixed(1)}</strong>`,
+                    high: (pct, diff) => `Hastanın tahmin edilen eksiklik olasılığı %${pct.toFixed(1)} olup, Youden karar eşiğinin (%49.3) üzerindedir. Bu olasılık düzeyinde durum 'Eksik' olarak sınıflandırılır.<br><br><strong>Youden karar sınırına olan uzaklık: %${diff.toFixed(1)}</strong>`,
+                    veryhigh: (pct, diff) => `Hastanın tahmin edilen eksiklik olasılığı %${pct.toFixed(1)} olup, Youden karar eşiğinin (%49.3) üzerindedir. Bu olasılık düzeyinde durum 'Eksik' olarak sınıflandırılır.<br><br><strong>Youden karar sınırına olan uzaklık: %${diff.toFixed(1)}</strong>`
+                },
+                sensTexts: {
+                    low: "%98.0 (Gerçek eksiklik vakalarını doğru saptama oranı)",
+                    grey: "Belirlenen Youden kesme noktasının altındadır.",
+                    high: "%82.0 (Eksikliği yakalama duyarlılığı)",
+                    veryhigh: "%11.9"
+                },
+                specTexts: {
+                    low: "%46.7 (Yeterli düzeydeki bireyleri doğru saptama oranı)",
+                    grey: "Hekimin klinik kanaati ve gözlemi önceliklidir.",
+                    high: "%72.5 (Yeterli düzeydeki bireyleri doğru ayırt etme gücü)",
+                    veryhigh: "%96.9 (Yanlış pozitiflik oranı %3.1)"
+                },
+                decision: {
+                    deficient: { arrow: "▼", label: "EKSİK", sub: "Model tahmini: 25(OH)D < 20 ng/mL" },
+                    sufficient: { arrow: "▲", label: "YETERLİ", sub: "Model tahmini: 25(OH)D ≥ 20 ng/mL" },
+                    borderline: { arrow: "ℹ", label: "SINIRDA — LABORATUVAR TESTİ ÖNERİLİR", sub: "Olasılık değeri karar sınırına yakındır" }
+                },
+                statsGroupTitles: {
+                    low: "Yeterli, Çok Olası grubu (< %20) için tanısal metrikler",
+                    grey: "Yeterli, Olası grubu (%20–%49.3) için tanısal metrikler",
+                    high: "Eksik, Olası grubu (%49.3–%80) için tanısal metrikler",
+                    veryhigh: "Eksik, Çok Olası grubu (≥ %80) için tanısal metrikler"
+                },
+                youdenLeft: "◄ Yeterli (< %49.3)",
+                youdenRight: "Eksik (≥ %49.3) ►",
+                youdenSplitNote: "Youden eşiği %49.3",
+                gaugeLabelDeficient: "Eksiklik Olasılığı",
+                gaugeLabelSufficient: "Yeterli Olma Olasılığı",
+                gaugeParadoxNote: "Model, eksiklik olasılığı %49,3 (Youden eşiği) ve üzerinde olduğunda “eksik” öngörür. Bu değer %49,3–%50 arasındayken karar “eksik” yönündedir; ancak gösterilen olasılık henüz %50’nin altında olabilir."
+            },
+            en: {
+                bmiText: (bmi, category) => `${bmi.toFixed(2)} kg/m² (${category})`,
+                bmiCategories: {
+                    underweight: "Underweight",
+                    normal: "Normal Weight",
+                    overweight: "Overweight",
+                    obese: "Obese"
+                },
+                riskClasses: {
+                    low: "Sufficient, Very Likely",
+                    grey: "Sufficient, Likely",
+                    high: "Deficient, Likely",
+                    veryhigh: "Deficient, Very Likely"
+                },
+                recTitles: {
+                    low: "Clinical Rule-out Area",
+                    grey: "Model Decision Boundary",
+                    high: "Model Decision Boundary",
+                    veryhigh: "Clinical Verification Area (Rule-in)"
+                },
+                riskTexts: {
+                    low: (pct, diff) => `The patient's predicted probability of deficiency is ${pct.toFixed(1)}%, which is below the Youden decision threshold (49.3%). At this probability level, the status is classified as 'Sufficient'.<br><br><strong>Proximity to the Youden boundary: ${diff.toFixed(1)}%</strong>`,
+                    grey: (pct, diff) => `The patient's predicted probability of deficiency is ${pct.toFixed(1)}%, which is below the Youden decision threshold (49.3%). At this probability level, the status is classified as 'Sufficient'.<br><br><strong>Proximity to the Youden boundary: ${diff.toFixed(1)}%</strong>`,
+                    high: (pct, diff) => `The patient's predicted probability of deficiency is ${pct.toFixed(1)}%, which is above the Youden decision threshold (49.3%). At this probability level, the status is classified as 'Deficient'.<br><br><strong>Proximity to the Youden boundary: ${diff.toFixed(1)}%</strong>`,
+                    veryhigh: (pct, diff) => `The patient's predicted probability of deficiency is ${pct.toFixed(1)}%, which is above the Youden decision threshold (49.3%). At this probability level, the status is classified as 'Deficient'.<br><br><strong>Proximity to the Youden boundary: ${diff.toFixed(1)}%</strong>`
+                },
+                sensTexts: {
+                    low: "%98.0 (True positive rate / sensitivity)",
+                    grey: "Below the optimized Youden index threshold.",
+                    high: "%82.0 (Sensitivity / detection rate of deficiency)",
+                    veryhigh: "%11.9"
+                },
+                specTexts: {
+                    low: "%46.7 (True negative rate / specificity)",
+                    grey: "Physician's clinical judgment and monitoring are primary.",
+                    high: "%72.5 (Specificity / correct identification of sufficient cases)",
+                    veryhigh: "%96.9 (Specificity / false positive rate of 3.1%)"
+                },
+                decision: {
+                    deficient: { arrow: "▼", label: "DEFICIENT", sub: "Model prediction: 25(OH)D < 20 ng/mL" },
+                    sufficient: { arrow: "▲", label: "SUFFICIENT", sub: "Model prediction: 25(OH)D ≥ 20 ng/mL" },
+                    borderline: { arrow: "ℹ", label: "BORDERLINE — LABORATORY TEST RECOMMENDED", sub: "Probability is close to the decision boundary" }
+                },
+                statsGroupTitles: {
+                    low: "Diagnostic metrics for the Sufficient, Very Likely group (< 20%)",
+                    grey: "Diagnostic metrics for the Sufficient, Likely group (20–49.3%)",
+                    high: "Diagnostic metrics for the Deficient, Likely group (49.3–80%)",
+                    veryhigh: "Diagnostic metrics for the Deficient, Very Likely group (≥ 80%)"
+                },
+                youdenLeft: "◄ Sufficient (< 49.3%)",
+                youdenRight: "Deficient (≥ 49.3%) ►",
+                youdenSplitNote: "Youden threshold 49.3%",
+                gaugeLabelDeficient: "Probability of Deficiency",
+                gaugeLabelSufficient: "Probability of Sufficiency",
+                gaugeParadoxNote: "The model predicts “deficient” when the probability of deficiency is 49.3% (Youden threshold) or higher. When this value is between 49.3% and 50%, the decision is “deficient”, yet the displayed probability may still be below 50%."
+            }
+        };
+
+        const trFlagSvg = `
+            <svg viewBox="0 0 30 20" style="width: 1.25rem; height: 0.85rem; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); vertical-align: middle;">
+                <rect width="30" height="20" fill="#e30a17"/>
+                <circle cx="12" cy="10" r="5" fill="#fff"/>
+                <circle cx="13.2" cy="10" r="4" fill="#e30a17"/>
+                <polygon points="17.2,10 19,10.6 17.5,11.7 18.1,13.5 16.6,12.4 15.1,13.5 15.7,11.7 14.2,10.6 16,10.6 16.6,8.8" fill="#fff" transform="rotate(-18, 16.6, 10.7)"/>
+            </svg>
+        `;
+
+        const enFlagSvg = `
+            <svg viewBox="0 0 60 30" style="width: 1.25rem; height: 0.85rem; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); vertical-align: middle;">
+                <rect width="60" height="30" fill="#012169"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/>
+                <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/>
+                <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+        `;
+
+        let currentLang = 'tr';
+
+        // Toggle language dropdown
+        function toggleLangDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('langDropdownMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('langDropdownMenu');
+            if (menu && menu.style.display === 'block') {
+                const dropdown = document.querySelector('.lang-dropdown');
+                if (!dropdown.contains(e.target)) {
+                    menu.style.display = 'none';
+                }
+            }
+        });
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Update active dropdown trigger text and flag
+            document.getElementById('activeLangFlag').innerHTML = lang === 'tr' ? trFlagSvg : enFlagSvg;
+            document.getElementById('activeLangText').innerText = lang.toUpperCase();
+            
+            // Hide menu after selection
+            document.getElementById('langDropdownMenu').style.display = 'none';
+
+            const t = translations[lang];
+            
+            // Update static content
+            document.getElementById('headerTitle').innerHTML = t.title;
+            document.getElementById('headerSubtitle').innerText = t.subtitle;
+            document.getElementById('inputCardTitle').innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                ${t.patientParams}
+            `;
+            document.getElementById('ageLabel').innerText = t.age;
+            document.getElementById('genderLabel').innerText = t.gender;
+            
+            // Update gender select options
+            const genderSelect = document.getElementById('gender');
+            genderSelect.options[0].text = t.genderFemale;
+            genderSelect.options[1].text = t.genderMale;
+            
+            document.getElementById('heightLabel').innerText = t.height;
+            document.getElementById('weightLabel').innerText = t.weight;
+            document.getElementById('dateLabel').innerText = t.dateLabel;
+            document.getElementById('dateHelper').innerText = t.dateHelper;
+            
+            // Update supplement label & tooltip
+            document.getElementById('suppLabelText').innerText = t.suppLabel;
+            document.getElementById('suppTooltip').setAttribute('data-tooltip', t.suppTooltip);
+            
+            // Update supplement select options
+            const suppSelect = document.getElementById('supplement');
+            suppSelect.options[0].text = t.suppNo;
+            suppSelect.options[1].text = t.suppYes;
+            
+            document.getElementById('resultCardTitle').innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                ${t.reportTitle}
+            `;
+            document.querySelector(".gauge-label").innerText = t.probDeficiency;
+            document.querySelector(".result-container label").innerText = t.riskLevel;
+            document.getElementById('recTitle').innerText = t.recHeader;
+            
+            document.getElementById('sensLabelText').innerText = t.sensLabel;
+            document.getElementById('specLabelText').innerText = t.specLabel;
+            document.getElementById('bmiLabelText').innerText = t.calculatedBmi;
+            
+            document.querySelector(".threshold-bar-title").innerText = t.thresholdTitle;
+            document.getElementById('threshLabel1').innerHTML = t.threshLow;
+            document.getElementById('threshLabel2').innerHTML = t.threshGrey;
+            document.getElementById('threshLabel3').innerHTML = t.threshHigh;
+            document.getElementById('threshLabel4').innerHTML = t.threshVeryHigh;
+
+            document.getElementById('rationaleTitleText').innerText = t.rationaleTitle;
+            document.getElementById('rationaleLow').innerHTML = t.rationaleLow;
+            document.getElementById('rationaleYouden').innerHTML = t.rationaleYouden;
+            document.getElementById('rationaleHigh').innerHTML = t.rationaleHigh;
+            
+            document.getElementById('metricsCardTitle').innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 7h-4v3h4v2h-4v3h-2v-3H7v-2h4v-3H7V8h4V5h2v3h4v2z"/></svg>
+                ${t.metricsTitle}
+            `;
+            document.getElementById('metricsCardSub').innerText = t.metricsSub;
+            
+            document.getElementById('mTitle1').innerText = t.metricAuc;
+            document.getElementById('mTitle2').innerText = t.metricBrier;
+            document.getElementById('mTitle3').innerText = t.metricYouden;
+            document.getElementById('mTitle4').innerText = t.metricSlope;
+            document.getElementById('mTitle5').innerText = t.metricIntercept;
+            
+            document.getElementById('mHelp2').innerText = t.metricBrierHelper;
+            document.getElementById('mHelp3').innerText = t.metricYoudenHelper;
+            document.getElementById('mHelp4').innerText = t.metricSlopeHelper;
+            document.getElementById('mHelp5').innerText = t.metricInterceptHelper;
+            
+            document.getElementById('exclusionCardTitle').innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                ${t.exclusionTitle}
+            `;
+            document.getElementById('exclusionCardSub').innerText = t.exclusionSub;
+            
+            for (let i = 1; i <= 12; i++) {
+                document.getElementById(`exItem${i}`).innerHTML = t[`exclusionItem${i}`];
+            }
+            
+            document.getElementById('disclaimerText').innerHTML = t.disclaimer;
+            
+            // Age warning text updates
+            document.getElementById('ageWarningTitle').innerText = t.ageWarningTitle;
+            document.getElementById('ageWarningText').innerText = t.ageWarningText;
+            
+            // Recalculate to update the dynamic texts in target language
+            calculateRisk();
+        }
+
+        // Model Parameters (Logistic Regression)
+        const BETA_CONST = 0.063957;
+        const BETA_AGE = -0.396035;
+        const BETA_GENDER = 0.415455; // Female = 1, Male = 0
+        const BETA_BMI = 0.372769;
+        const BETA_SUPP = -2.837480; // Supplement = 1, None = 0
+        const BETA_SIN = 0.483812;
+        const BETA_COS = 0.214001;
+
+        // Scaler Parameters (StandardScaler)
+        const MEAN_AGE = 43.816492, STD_AGE = 13.260140;
+        const MEAN_BMI = 27.847251, STD_BMI = 5.846350;
+        const MEAN_SIN = 0.076473,  STD_SIN = 0.675676;
+        const MEAN_COS = -0.076318, STD_COS = 0.729238;
+
+        // Variance-Covariance Matrix (VCOV) from Statsmodels Logit (Eğitim Seti)
+        // Sıralama: [Intercept, Age_scaled, Gender, BMI_scaled, Supplement, Sin_scaled, Cos_scaled]
+        const VCOV = [
+            [0.022374927777822323, -5.6031092835949255e-05, -0.022138589460686427, -0.00026236275279279564, -0.002039551825919109, 0.0001194958111676529, -0.0002743277733255881],
+            [-5.603109283594898e-05, 0.005114815866850913, 0.0002311037731652543, -0.0014476459263473584, 0.00018557716537959145, -0.00046655795872359914, -0.0001303554152199661],
+            [-0.022138589460686427, 0.00023110377316525453, 0.028637290096214685, 0.00036370644928791996, -0.004253877463800898, -3.0244375460857446e-06, 0.0006088653915994129],
+            [-0.00026236275279279564, -0.0014476459263473584, 0.00036370644928791996, 0.005322557327054098, -0.000840145200584017, 0.0006685248853677739, 0.00018892702619391648],
+            [-0.002039551825919109, 0.00018557716537959145, -0.004253877463800898, -0.000840145200584017, 0.05001797093750059, -0.0016352634848185977, -0.001090596512153715],
+            [0.0001194958111676529, -0.00046655795872359914, -3.0244375460857446e-06, 0.0006685248853677739, -0.0016352634848185977, 0.005136620976331984, 2.1005721617473332e-05],
+            [-0.0002743277733255881, -0.0001303554152199661, 0.0006088653915994129, 0.00018892702619391648, -0.001090596512153715, 2.1005721617473332e-05, 0.004510733567039566]
+        ];
+
+        // Wald Confidence Interval Function
+        function predictWithCI(patientFeatures) {
+            // patientFeatures = [1, age_scaled, gender, bmi_scaled, supplement, sin_scaled, cos_scaled]
+            const logit_val = BETA_CONST 
+                + (BETA_AGE * patientFeatures[1])
+                + (BETA_GENDER * patientFeatures[2])
+                + (BETA_BMI * patientFeatures[3])
+                + (BETA_SUPP * patientFeatures[4])
+                + (BETA_SIN * patientFeatures[5])
+                + (BETA_COS * patientFeatures[6]);
+            
+            // Calculate variance of linear predictor: Var(eta) = x^T * VCOV * x
+            let variance = 0.0;
+            for (let i = 0; i < 7; i++) {
+                let temp = 0.0;
+                for (let j = 0; j < 7; j++) {
+                    temp += patientFeatures[j] * VCOV[j][i];
+                }
+                variance += patientFeatures[i] * temp;
+            }
+            
+            let se = Math.sqrt(variance);
+            
+            // Recalibration scaling if calibration slope exists (we default to 1.0)
+            const CALIB_SLOPE = 1.0; 
+            se = se * CALIB_SLOPE;
+            
+            const logit_low = logit_val - 1.96 * se;
+            const logit_high = logit_val + 1.96 * se;
+            
+            const point = 1 / (1 + Math.exp(-logit_val));
+            const ci_low = 1 / (1 + Math.exp(-logit_low));
+            const ci_high = 1 / (1 + Math.exp(-logit_high));
+            
+            return { point, ci_low, ci_high };
+        }
+
+        // Get Day of the Year
+        function getDayOfYear(date) {
+            const start = new Date(date.getFullYear(), 0, 0);
+            const diff = date - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        // Calculate and update risk
+        function calculateRisk() {
+            // Get values
+            const age = parseFloat(document.getElementById('age').value);
+            const gender = parseFloat(document.getElementById('gender').value);
+            const height = parseFloat(document.getElementById('height').value) || 0;
+            const weight = parseFloat(document.getElementById('weight').value) || 0;
+            const dateStr = document.getElementById('date').value;
+            const supplement = parseFloat(document.getElementById('supplement').value);
+
+            if (isNaN(age) || !height || !weight || !dateStr) return;
+
+            // Check age range limits (18 - 85 years inclusive)
+            if (age < 18 || age > 85) {
+                document.getElementById('normalResultContainer').style.display = 'none';
+                document.getElementById('ageWarningContainer').style.display = 'flex';
+                return;
+            } else {
+                document.getElementById('normalResultContainer').style.display = 'flex';
+                document.getElementById('ageWarningContainer').style.display = 'none';
+            }
+
+            // Calculate BMI
+            const bmi = weight / ((height / 100) * (height / 100));
+            
+            // Get dynamic translation settings
+            const dt = dynamicTranslations[currentLang];
+            
+            let bmiCategoryText = "";
+            if (bmi < 18.5) bmiCategoryText = dt.bmiCategories.underweight;
+            else if (bmi < 25) bmiCategoryText = dt.bmiCategories.normal;
+            else if (bmi < 30) bmiCategoryText = dt.bmiCategories.overweight;
+            else bmiCategoryText = dt.bmiCategories.obese;
+
+            document.getElementById('bmiValue').innerText = dt.bmiText(bmi, bmiCategoryText);
+
+            // Calculate sin_gun, cos_gun
+            const date = new Date(dateStr);
+            const j = getDayOfYear(date);
+            const sin_gun = Math.sin(2 * Math.PI * j / 365);
+            const cos_gun = Math.cos(2 * Math.PI * j / 365);
+
+            // Scale inputs
+            const age_scaled = (age - MEAN_AGE) / STD_AGE;
+            const bmi_scaled = (bmi - MEAN_BMI) / STD_BMI;
+            const sin_scaled = (sin_gun - MEAN_SIN) / STD_SIN;
+            const cos_scaled = (cos_gun - MEAN_COS) / STD_COS;
+
+            // Run prediction with Confidence Interval (Wald Method)
+            const features = [1.0, age_scaled, gender, bmi_scaled, supplement, sin_scaled, cos_scaled];
+            const result = predictWithCI(features);
+
+            // Update UI
+            updateUI(result.point, result.point * 100, result.ci_low * 100, result.ci_high * 100);
+        }
+
+        // Toggle the "rationale for thresholds" collapsible section
+        function toggleRationale() {
+            const title = document.getElementById('rationaleTitle');
+            const body = document.getElementById('rationaleBody');
+            title.classList.toggle('open');
+            body.classList.toggle('open');
+        }
+
+        // Update UI Elements
+        function updateUI(prob, pct, ciLow, ciHigh) {
+            const dtLang = dynamicTranslations[currentLang];
+            const YOUDEN = 49.3; // Youden-optimal karar eşiği (%)
+            const YAKINLIK_ESIGI = 3.0; // Sınır bölgesi (borderline) için yüzde puan eşiği
+            
+            // Check if CI contains Youden threshold OR if point prediction is within YAKINLIK_ESIGI of Youden threshold
+            const isBorderline = (ciLow <= YOUDEN && ciHigh >= YOUDEN) || (Math.abs(pct - YOUDEN) < YAKINLIK_ESIGI);
+            const isDef = pct >= YOUDEN;
+
+            // Gauge: tahmin edilen sınıfın olasılığını göster.
+            // Eşik altında → P(yeterli) = 100 - pct ; eşik üstünde → P(eksik) = pct
+            const shownPct = isDef ? pct : (100 - pct);
+            document.getElementById('gaugeValue').innerText = shownPct.toFixed(1) + "%";
+            document.getElementById('gaugeLabel').innerText =
+                isDef ? dtLang.gaugeLabelDeficient : dtLang.gaugeLabelSufficient;
+
+            // Display Confidence Interval (CI) inside the gauge
+            const shownCILow = isDef ? ciLow : (100 - ciHigh);
+            const shownCIHigh = isDef ? ciHigh : (100 - ciLow);
+            const ciLabelText = currentLang === 'tr'
+                ? `%95 GA: %${shownCILow.toFixed(1)} – %${shownCIHigh.toFixed(1)}`
+                : `95% CI: ${shownCILow.toFixed(1)}% – ${shownCIHigh.toFixed(1)}%`;
+            document.getElementById('gaugeCI').innerText = ciLabelText;
+
+            // Paradoks bölgesi (%49.3–%50): karar "eksik" ama gösterilen olasılık < %50.
+            const paradox = document.getElementById('gaugeParadoxNote');
+            if (pct >= YOUDEN && pct < 50.0) {
+                paradox.innerText = dtLang.gaugeParadoxNote;
+                paradox.style.display = "block";
+            } else {
+                paradox.style.display = "none";
+            }
+
+            // Halka, gösterilen sayıyla aynı yönde dolar (sayı ile görsel tutarlı kalsın)
+            const circle = document.getElementById('gaugeFill');
+            const circumference = 2 * Math.PI * 90; // r = 90
+            const offset = circumference - ((shownPct / 100) * circumference);
+            circle.style.strokeDashoffset = offset;
+
+            // Update threshold marker position and value
+            document.getElementById('riskMarker').style.left = pct + '%';
+            document.getElementById('markerVal').innerText = pct.toFixed(1) + '%';
+
+            // Select Risk category colors and status descriptions (No command verbs)
+            let riskClass = "";
+            let riskBg = "";
+            let riskText = "";
+            let sens = "";
+            let spec = "";
+            let recTitleText = "";
+            let riskColor = "";
+            
+            const dt = dynamicTranslations[currentLang];
+            
+            // Risk limits: <20%, 20-<49.3%, 49.3-<80%, >=80%
+            if (pct < 20.0) {
+                riskClass = dt.riskClasses.low;
+                riskColor = "var(--risk-low)";
+                riskBg = "var(--risk-low-bg)";
+                recTitleText = dt.recTitles.low;
+                riskText = dt.riskTexts.low(pct, Math.abs(pct - 49.3));
+                sens = dt.sensTexts.low;
+                spec = dt.specTexts.low;
+            } else if (pct < 49.3) {
+                riskClass = dt.riskClasses.grey;
+                riskColor = "var(--risk-grey)";
+                riskBg = "var(--risk-grey-bg)";
+                recTitleText = dt.recTitles.grey;
+                riskText = dt.riskTexts.grey(pct, Math.abs(pct - 49.3));
+                sens = dt.sensTexts.grey;
+                spec = dt.specTexts.grey;
+            } else if (pct < 80.0) {
+                riskClass = dt.riskClasses.high;
+                riskColor = "var(--risk-high)";
+                riskBg = "var(--risk-high-bg)";
+                recTitleText = dt.recTitles.high;
+                riskText = dt.riskTexts.high(pct, Math.abs(pct - 49.3));
+                sens = dt.sensTexts.high;
+                spec = dt.specTexts.high;
+            } else {
+                riskClass = dt.riskClasses.veryhigh;
+                riskColor = "var(--risk-veryhigh)";
+                riskBg = "var(--risk-veryhigh-bg)";
+                recTitleText = dt.recTitles.veryhigh;
+                riskText = dt.riskTexts.veryhigh(pct, Math.abs(pct - 49.3));
+                sens = dt.sensTexts.veryhigh;
+                spec = dt.specTexts.veryhigh;
+            }
+
+            // Override category headers/colors if in borderline zone
+            if (isBorderline) {
+                riskClass = currentLang === 'tr' ? "Sınırda (Karar Verilemez)" : "Borderline (Indeterminate)";
+                riskColor = "#475569";
+                riskBg = "#f1f5f9";
+                recTitleText = currentLang === 'tr' ? "İstatistiksel Karar Sınırı (Belirsiz Alan)" : "Statistical Decision Boundary (Indeterminate Zone)";
+                
+                // Override the explanation text for borderline cases
+                const underOrOver = pct < YOUDEN;
+                if (currentLang === 'tr') {
+                    if (underOrOver) {
+                        riskText = `Ham model çıktısı Youden eşiğinin altında kalsa da (%${pct.toFixed(1)} < %49.3), bu fark istatistiksel belirsizlik payı içinde kaldığından kesin bir sınıflandırma yapılmamış, hasta 'Sınırda' olarak işaretlenmiştir.<br><br><strong>Youden karar sınırına olan uzaklık: %${Math.abs(pct - YOUDEN).toFixed(1)}</strong>`;
+                    } else {
+                        riskText = `Ham model çıktısı Youden eşiğinin üstünde olsa da (%${pct.toFixed(1)} &ge; %49.3), bu fark istatistiksel belirsizlik payı içinde kaldığından kesin bir sınıflandırma yapılmamış, hasta 'Sınırda' olarak işaretlenmiştir.<br><br><strong>Youden karar sınırına olan uzaklık: %${Math.abs(pct - YOUDEN).toFixed(1)}</strong>`;
+                    }
+                } else {
+                    if (underOrOver) {
+                        riskText = `Although the raw model output remains below the Youden threshold (${pct.toFixed(1)}% < 49.3%), this difference lies within the statistical uncertainty range; hence, no definitive classification has been made and the patient is designated as 'Borderline'.<br><br><strong>Proximity to the Youden boundary: ${Math.abs(pct - YOUDEN).toFixed(1)}%</strong>`;
+                    } else {
+                        riskText = `Although the raw model output remains at or above the Youden threshold (${pct.toFixed(1)}% &ge; 49.3%), this difference lies within the statistical uncertainty range; hence, no definitive classification has been made and the patient is designated as 'Borderline'.<br><br><strong>Proximity to the Youden boundary: ${Math.abs(pct - YOUDEN).toFixed(1)}%</strong>`;
+                    }
+                }
+            }
+
+            // Binary model decision at the Youden-optimal threshold (49.3%)
+            // >= 49.3% -> Deficient (▼), < 49.3% -> Sufficient (▲)
+            // If in borderline zone, change decision banner to a neutral state
+            let dec, decColor, decBg;
+            if (isBorderline) {
+                dec = dt.decision.borderline;
+                decColor = "#475569";
+                decBg = "#f1f5f9";
+            } else {
+                dec = isDef ? dt.decision.deficient : dt.decision.sufficient;
+                decColor = isDef ? "var(--risk-high)" : "var(--risk-low)";
+                decBg = isDef ? "var(--risk-high-bg)" : "var(--risk-low-bg)";
+            }
+            document.getElementById('decisionArrow').innerText = dec.arrow;
+            document.getElementById('decisionLabel').innerText = dec.label;
+            document.getElementById('decisionSub').innerText = dec.sub;
+            const banner = document.getElementById('decisionBanner');
+            banner.style.color = decColor;
+            banner.style.backgroundColor = decBg;
+            banner.style.borderColor = decColor;
+
+            // Stats group header: which risk group these diagnostic metrics belong to
+            let groupKey = pct < 20.0 ? "low" : (pct < 49.3 ? "grey" : (pct < 80.0 ? "high" : "veryhigh"));
+            const sgt = document.getElementById('statsGroupTitle');
+            sgt.innerText = dt.statsGroupTitles[groupKey];
+            sgt.style.borderLeftColor = riskColor;
+            sgt.style.color = riskColor;
+
+            // Youden directional arrows (localised)
+            document.getElementById('youdenArrowLeft').innerText = dt.youdenLeft;
+            document.getElementById('youdenArrowRight').innerText = dt.youdenRight;
+            document.getElementById('youdenSplitNote').innerText = dt.youdenSplitNote;
+
+            // Set colors dynamically
+            circle.style.stroke = isBorderline ? "#475569" : riskColor; // Neutral stroke for borderline gauge
+            
+            const badge = document.getElementById('riskBadge');
+            badge.innerText = riskClass;
+            badge.style.backgroundColor = riskBg;
+            badge.style.color = riskColor;
+            badge.style.borderColor = riskColor;
+            badge.style.border = "1px solid " + riskColor;
+
+            const recBox = document.getElementById('recBox');
+            recBox.style.borderLeftColor = isBorderline ? "#475569" : riskColor;
+            document.getElementById('recHeader').innerHTML = `
+                <svg class="icon" style="color: ${isBorderline ? "#475569" : riskColor};" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span id="recTitle">${recTitleText}</span>
+            `;
+            
+            // Dynamic borderline warning inside Model Decision Boundary
+            let fullRiskText = riskText;
+            if (isBorderline) {
+                const borderMsg = currentLang === 'tr' 
+                    ? `<br><br><span style="color: #475569; font-weight: 500;">ℹ Bu hasta, modelin ayırt etme gücünün en düşük olduğu sınır bölgesinde yer almaktadır (Test AUC: 0.832). Bu aralıktaki tahminler için laboratuvar doğrulaması önerilir.</span>`
+                    : `<br><br><span style="color: #475569; font-weight: 500;">ℹ This patient lies in the borderline zone where the model's discriminative power is lowest (Test AUC: 0.832). Laboratory verification is recommended for predictions in this range.</span>`;
+                fullRiskText += borderMsg;
+            }
+            document.getElementById('recText').innerHTML = fullRiskText;
+
+            // Sens/Spec values
+            document.getElementById('sensValue').innerText = sens;
+            document.getElementById('specValue').innerText = spec;
+        }
+
+        window.onload = function() {
+            // Set default date to today
+            document.getElementById('date').valueAsDate = new Date();
+            
+            // Attach event listeners to all form controls to recalculate in real-time
+            const inputs = document.querySelectorAll('#riskForm input, #riskForm select');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateRisk);
+            });
+
+            // Initialize TR language translation
+            setLanguage('tr');
+        };
+    </script>
+</body>
+</html>
