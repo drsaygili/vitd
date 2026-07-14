@@ -1239,7 +1239,7 @@
                 decision: {
                     deficient: { arrow: "▼", label: "EKSİK", sub: "Model tahmini: 25(OH)D < 20 ng/mL" },
                     sufficient: { arrow: "▲", label: "YETERLİ", sub: "Model tahmini: 25(OH)D ≥ 20 ng/mL" },
-                    borderline: { arrow: "ℹ", label: "SINIRDA — LABORATUVAR TESTİ ÖNERİLİR", sub: "Olasılık değeri karar sınırına yakındır" }
+                    borderline: { arrow: "ℹ", label: "SINIRDA (KARAR VERİLEMEZ)", sub: "Olasılık değeri karar sınırına yakındır" }
                 },
                 statsGroupTitles: {
                     low: "Yeterli, Çok Olası grubu (< %20) için tanısal metrikler",
@@ -1295,7 +1295,7 @@
                 decision: {
                     deficient: { arrow: "▼", label: "DEFICIENT", sub: "Model prediction: 25(OH)D < 20 ng/mL" },
                     sufficient: { arrow: "▲", label: "SUFFICIENT", sub: "Model prediction: 25(OH)D ≥ 20 ng/mL" },
-                    borderline: { arrow: "ℹ", label: "BORDERLINE — LABORATORY TEST RECOMMENDED", sub: "Probability is close to the decision boundary" }
+                    borderline: { arrow: "ℹ", label: "BORDERLINE (INDETERMINATE)", sub: "Probability is close to the decision boundary" }
                 },
                 statsGroupTitles: {
                     low: "Diagnostic metrics for the Sufficient, Very Likely group (< 20%)",
@@ -1756,8 +1756,8 @@
             let fullRiskText = riskText;
             if (isBorderline) {
                 const borderMsg = currentLang === 'tr' 
-                    ? `<br><br><span style="color: #475569; font-weight: 500;">ℹ Bu hasta, modelin ayırt etme gücünün en düşük olduğu sınır bölgesinde yer almaktadır (Test AUC: 0.832). Bu aralıktaki tahminler için laboratuvar doğrulaması önerilir.</span>`
-                    : `<br><br><span style="color: #475569; font-weight: 500;">ℹ This patient lies in the borderline zone where the model's discriminative power is lowest (Test AUC: 0.832). Laboratory verification is recommended for predictions in this range.</span>`;
+                    ? `<br><br><span style="color: #475569; font-weight: 500;">ℹ Bu hasta, modelin ayırt etme gücünün en düşük olduğu sınır bölgesinde yer almaktadır (Test AUC: 0.832). Bu aralıktaki tahminler için laboratuvar doğrulaması önerilebilir.</span>`
+                    : `<br><br><span style="color: #475569; font-weight: 500;">ℹ This patient lies in the borderline zone where the model's discriminative power is lowest (Test AUC: 0.832). Laboratory verification may be recommended for predictions in this range.</span>`;
                 fullRiskText += borderMsg;
             }
             document.getElementById('recText').innerHTML = fullRiskText;
