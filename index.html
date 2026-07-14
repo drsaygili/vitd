@@ -929,7 +929,7 @@
                         <div id="gaugeCI" class="gauge-ci"></div>
                     </div>
                 </div>
-                <div id="gaugeParadoxNote" class="gauge-paradox-note" style="display:none;"></div>
+
 
                 <!-- Risk Status Badge -->
                 <div>
@@ -1613,14 +1613,7 @@
                 : `95% CI: ${shownCILow.toFixed(1)}% – ${shownCIHigh.toFixed(1)}%`;
             document.getElementById('gaugeCI').innerText = ciLabelText;
 
-            // Paradoks bölgesi (%49.3–%50): karar "eksik" ama gösterilen olasılık < %50.
-            const paradox = document.getElementById('gaugeParadoxNote');
-            if (pct >= YOUDEN && pct < 50.0) {
-                paradox.innerText = dtLang.gaugeParadoxNote;
-                paradox.style.display = "block";
-            } else {
-                paradox.style.display = "none";
-            }
+
 
             // Halka, gösterilen sayıyla aynı yönde dolar (sayı ile görsel tutarlı kalsın)
             const circle = document.getElementById('gaugeFill');
